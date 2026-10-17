@@ -18,7 +18,7 @@
 </header>
 
 <!-- SCREEN 1 — INFO -->
-<div id="sc-info">
+<div id="sc-info" style="flex:1;display:flex;flex-direction:column">
   <div class="entry-wrap">
     <div class="auth-card">
       <div class="auth-head">
@@ -52,7 +52,7 @@
 </div>
 
 <!-- SCREEN 2 — TEST LIST -->
-<div id="sc-tests" style="display:none">
+<div id="sc-tests" style="display:none;flex:1;flex-direction:column">
   <div class="page-wrap" style="max-width:680px">
     <div style="display:flex;align-items:center;gap:14px;margin-bottom:28px;flex-wrap:wrap">
       <button class="btn btn-ghost btn-sm" onclick="backToInfo()">← Back</button>
@@ -69,7 +69,7 @@
 </div>
 
 <!-- SCREEN 3 — EXAM -->
-<div id="sc-exam" style="display:none">
+<div id="sc-exam" style="display:none;flex:1;flex-direction:column">
   <div class="page-wrap" style="max-width:720px">
     <div class="exam-header">
       <h2 id="exam-title"></h2>
@@ -99,7 +99,7 @@
 </div>
 
 <!-- SCREEN 4 — SUBMITTED -->
-<div id="sc-done" style="display:none">
+<div id="sc-done" style="display:none;flex:1;flex-direction:column">
   <div class="page-wrap" style="max-width:520px">
     <div class="card">
       <div class="submitted-wrap">
@@ -126,7 +126,7 @@ const API = {
 let student=null, exam=null, answers={}, curQ=0
 
 const $=id=>document.getElementById(id)
-const show=id=>$(id).style.display='block'
+const show=id=>{const e=$(id);e.style.display='flex';e.style.flexDirection='column'}
 const hide=id=>$(id).style.display='none'
 const al=(id,msg,t='error')=>$(id).innerHTML=`<div class="alert alert-${t}">${msg}</div>`
 
