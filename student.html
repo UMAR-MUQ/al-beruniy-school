@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="uz">
+<html lang="en">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>O'quvchi — Al Beruniy International School</title>
+  <title>Student — Al Beruniy International School</title>
   <link rel="stylesheet" href="style.css"/>
   <style>
     .entry-wrap{min-height:calc(100vh - 68px);display:flex;align-items:center;justify-content:center;padding:28px 16px;
@@ -29,82 +29,74 @@
     <div class="topbar-logo">AB</div>
     <div class="topbar-title">
       <span>Al Beruniy International School</span>
-      <span>O'quvchi kabineti</span>
+      <span>Student Portal</span>
     </div>
   </div>
   <div class="topbar-right">
-    <a href="index.html">← Bosh sahifa</a>
+    <a href="index.html">← Home</a>
   </div>
 </header>
 
-<!-- ══════════════════════════════════════════════════════════
-     SCREEN 1 — INFO
-══════════════════════════════════════════════════════════ -->
+<!-- SCREEN 1 — INFO -->
 <div id="sc-info">
   <div class="entry-wrap">
     <div class="auth-card">
       <div class="auth-head">
         <div class="auth-icon">🎓</div>
-        <h2>O'quvchi kirishi</h2>
-        <p>Ma'lumotlaringizni kiriting</p>
+        <h2>Student Login</h2>
+        <p>Enter your details to continue</p>
       </div>
       <div id="info-alert"></div>
-      <div class="form-group"><label>Ism</label>
-        <input type="text" id="s-ism" placeholder="Ismingiz"/></div>
-      <div class="form-group"><label>Familiya</label>
-        <input type="text" id="s-fam" placeholder="Familiyangiz"/></div>
+      <div class="form-group"><label>First Name</label>
+        <input type="text" id="s-ism" placeholder="Your first name"/></div>
+      <div class="form-group"><label>Last Name</label>
+        <input type="text" id="s-fam" placeholder="Your last name"/></div>
       <div class="form-row">
-        <div class="form-group"><label>Sinf</label>
+        <div class="form-group"><label>Grade</label>
           <select id="s-sinf">
-            <option value="">Sinf</option>
+            <option value="">Grade</option>
             <option>1</option><option>2</option><option>3</option><option>4</option>
             <option>5</option><option>6</option><option>7</option><option>8</option>
             <option>9</option><option>10</option><option>11</option>
           </select></div>
-        <div class="form-group"><label>Sinf harfi</label>
+        <div class="form-group"><label>Class</label>
           <select id="s-harf">
-            <option value="">Harf</option>
+            <option value="">Class</option>
             <option>A</option><option>B</option><option>C</option>
             <option>D</option><option>E</option>
           </select></div>
       </div>
       <button class="btn btn-primary btn-block" onclick="enterStudent()">
-        Davom etish →
+        Continue →
       </button>
     </div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════════════════
-     SCREEN 2 — TEST LIST
-══════════════════════════════════════════════════════════ -->
+<!-- SCREEN 2 — TEST LIST -->
 <div id="sc-tests" style="display:none">
   <div class="page-wrap" style="max-width:680px">
     <div style="display:flex;align-items:center;gap:14px;margin-bottom:28px;flex-wrap:wrap">
-      <button class="btn btn-ghost btn-sm" onclick="backToInfo()">← Orqaga</button>
+      <button class="btn btn-ghost btn-sm" onclick="backToInfo()">← Back</button>
       <div>
         <div style="font-weight:800;font-size:1.05rem" id="st-name"></div>
         <div style="color:var(--muted);font-size:.82rem" id="st-class"></div>
       </div>
     </div>
     <div class="card">
-      <div class="section-title">📋 Siz uchun testlar</div>
+      <div class="section-title">📋 Available Tests</div>
       <div id="test-list"></div>
     </div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════════════════
-     SCREEN 3 — EXAM
-══════════════════════════════════════════════════════════ -->
+<!-- SCREEN 3 — EXAM -->
 <div id="sc-exam" style="display:none">
   <div class="page-wrap" style="max-width:720px">
-
     <div class="exam-header">
       <h2 id="exam-title"></h2>
       <p  id="exam-meta"></p>
     </div>
-
     <div class="progress-wrap">
       <div class="progress-info">
         <span id="prog-label"></span>
@@ -114,39 +106,33 @@
         <div class="progress-bar" id="prog-bar" style="width:0%"></div>
       </div>
     </div>
-
     <div class="q-dots" id="q-dots"></div>
-
     <div id="question-card"></div>
-
     <div class="q-nav" style="margin-top:16px">
-      <button class="btn btn-ghost" id="btn-prev" onclick="prevQ()">← Oldingi</button>
+      <button class="btn btn-ghost" id="btn-prev" onclick="prevQ()">← Previous</button>
       <span class="q-nav-center" id="q-counter"></span>
-      <button class="btn btn-primary" id="btn-next" onclick="nextQ()">Keyingi →</button>
+      <button class="btn btn-primary" id="btn-next" onclick="nextQ()">Next →</button>
     </div>
-
     <div style="margin-top:14px">
       <button class="btn btn-success btn-block" id="btn-finish"
         style="display:none" onclick="finishExam()">
-        ✅ Testni yakunlash
+        ✅ Submit Test
       </button>
     </div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════════════════
-     SCREEN 4 — SUBMITTED (faqat "topshirildi")
-══════════════════════════════════════════════════════════ -->
+<!-- SCREEN 4 — SUBMITTED -->
 <div id="sc-done" style="display:none">
   <div class="page-wrap" style="max-width:520px">
     <div class="card">
       <div class="submitted-wrap">
         <div class="s-icon">✅</div>
-        <h2>Test muvaffaqiyatli topshirildi!</h2>
+        <h2>Test submitted successfully!</h2>
         <p id="done-text"></p>
         <div style="margin-top:32px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
-          <button class="btn btn-outline" onclick="backToTests()">← Testlar ro'yxati</button>
-          <button class="btn btn-primary" onclick="location.href='index.html'">🏠 Bosh sahifa</button>
+          <button class="btn btn-outline" onclick="backToTests()">← Back to Tests</button>
+          <button class="btn btn-primary" onclick="location.href='index.html'">🏠 Home</button>
         </div>
       </div>
     </div>
@@ -158,66 +144,45 @@
 </footer>
 
 <script>
-/* ── STORAGE ── */
 const LS = {
   tests:   ()=> JSON.parse(localStorage.getItem('mp_tests')||'[]'),
   results: ()=> JSON.parse(localStorage.getItem('mp_results')||'[]'),
   saveRes: d=> localStorage.setItem('mp_results', JSON.stringify(d))
 }
 
-/* ── STATE ── */
-let student = null   // { ism, fam, sinf, harf, fullName }
-let exam    = null   // current test object
-let answers = {}     // { qIndex: value }
-let curQ    = 0
+let student=null, exam=null, answers={}, curQ=0
 
-/* ── HELPERS ── */
 const $ = id => document.getElementById(id)
-const show = id => $(id).style.display = 'block'
-const hide = id => $(id).style.display = 'none'
+const show = id => $(id).style.display='block'
+const hide = id => $(id).style.display='none'
 const al = (id,msg,t='error') => $(id).innerHTML=`<div class="alert alert-${t}">${msg}</div>`
 
-/* ════════════════════════════════════════
-   SCREEN 1 — INFO
-════════════════════════════════════════ */
 function enterStudent(){
-  const ism  = $('s-ism').value.trim()
-  const fam  = $('s-fam').value.trim()
-  const sinf = $('s-sinf').value
-  const harf = $('s-harf').value
-  if(!ism||!fam||!sinf||!harf)
-    return al('info-alert','⚠️ Barcha maydonlarni to\'ldiring')
-
-  student = { ism, fam, sinf, harf, fullName: ism+' '+fam }
-  $('st-name').textContent  = '🎓 '+student.fullName
-  $('st-class').textContent = sinf+'-'+harf+' sinf'
-  hide('sc-info'); show('sc-tests')
-  renderTestList()
+  const ism=$('s-ism').value.trim(), fam=$('s-fam').value.trim()
+  const sinf=$('s-sinf').value, harf=$('s-harf').value
+  if(!ism||!fam||!sinf||!harf) return al('info-alert','⚠️ Please fill in all fields')
+  student={ ism, fam, sinf, harf, fullName:ism+' '+fam }
+  $('st-name').textContent='🎓 '+student.fullName
+  $('st-class').textContent='Grade '+sinf+'-'+harf
+  hide('sc-info'); show('sc-tests'); renderTestList()
 }
 
 function backToInfo(){ hide('sc-tests'); show('sc-info') }
 
-/* ════════════════════════════════════════
-   SCREEN 2 — TEST LIST
-════════════════════════════════════════ */
 function renderTestList(){
-  const all = LS.tests()
-  // match sinf OR "Barcha"
-  const tests = all.filter(t=>
-    (t.sinf===student.sinf || t.sinf==='Barcha') &&
-    (t.harf===student.harf || t.harf==='Barcha')
+  const all=LS.tests()
+  const tests=all.filter(t=>
+    (t.sinf===student.sinf||t.sinf==='Barcha'||t.harf==='All') &&
+    (t.harf===student.harf||t.harf==='Barcha'||t.harf==='All')
   )
-  const results = LS.results()
-  const el = $('test-list')
-
+  const results=LS.results()
+  const el=$('test-list')
   if(!tests.length){
-    el.innerHTML=`<div class="empty-state"><span class="es-icon">📭</span>
-      <p>Sinfingiz uchun hozircha test yo'q.</p></div>`
+    el.innerHTML=`<div class="empty-state"><span class="es-icon">📭</span><p>No tests available for your class yet.</p></div>`
     return
   }
-
-  el.innerHTML = tests.map(t=>{
-    const done = results.find(r=>
+  el.innerHTML=tests.map(t=>{
+    const done=results.find(r=>
       r.testId===t.id &&
       r.studentName.toLowerCase()===student.fullName.toLowerCase() &&
       r.sinf===student.sinf && r.harf===student.harf
@@ -227,10 +192,10 @@ function renderTestList(){
         <div class="tli-icon done-icon">✅</div>
         <div class="tli-body">
           <h4>${t.nomi}</h4>
-          <p>👨‍🏫 ${t.teacherName} &nbsp;·&nbsp; 📚 ${t.fan} &nbsp;·&nbsp; ❓ ${t.questions.length} savol</p>
+          <p>👨‍🏫 ${t.teacherName} &nbsp;·&nbsp; 📚 ${t.fan} &nbsp;·&nbsp; ❓ ${t.questions.length} questions</p>
         </div>
         <div class="tli-right">
-          <span class="badge badge-green">Topshirildi ✓</span>
+          <span class="badge badge-green">Submitted ✓</span>
         </div>
       </div>`
     }
@@ -238,193 +203,117 @@ function renderTestList(){
       <div class="tli-icon">📋</div>
       <div class="tli-body">
         <h4>${t.nomi}</h4>
-        <p>👨‍🏫 ${t.teacherName} &nbsp;·&nbsp; 📚 ${t.fan} &nbsp;·&nbsp; ❓ ${t.questions.length} savol</p>
+        <p>👨‍🏫 ${t.teacherName} &nbsp;·&nbsp; 📚 ${t.fan} &nbsp;·&nbsp; ❓ ${t.questions.length} questions</p>
       </div>
       <div class="tli-right">
-        <span class="badge badge-blue">${t.sinf}-${t.harf}</span>
-        <div style="font-size:.8rem;color:var(--blue);font-weight:700;margin-top:4px">Boshlash →</div>
+        <span class="badge badge-blue">Grade ${t.sinf}-${t.harf}</span>
+        <div style="font-size:.8rem;color:var(--blue);font-weight:700;margin-top:4px">Start →</div>
       </div>
     </div>`
   }).join('')
 }
 
-/* ════════════════════════════════════════
-   SCREEN 3 — EXAM
-════════════════════════════════════════ */
 function startTest(id){
-  const test = LS.tests().find(t=>t.id===id)
-  if(!test) return
-  // duplicate guard
-  const already = LS.results().find(r=>
+  const test=LS.tests().find(t=>t.id===id); if(!test) return
+  const already=LS.results().find(r=>
     r.testId===id &&
     r.studentName.toLowerCase()===student.fullName.toLowerCase() &&
     r.sinf===student.sinf && r.harf===student.harf
   )
-  if(already){ alert('Siz bu testni allaqachon topshirdingiz!'); return }
-
-  exam    = test
-  answers = {}
-  curQ    = 0
-  $('exam-title').textContent = test.nomi
-  $('exam-meta').textContent  = `👨‍🏫 ${test.teacherName}  ·  📚 ${test.fan}  ·  ❓ ${test.questions.length} savol`
-  hide('sc-tests'); show('sc-exam')
-  renderQ()
+  if(already){ alert('You have already submitted this test!'); return }
+  exam=test; answers={}; curQ=0
+  $('exam-title').textContent=test.nomi
+  $('exam-meta').textContent=`👨‍🏫 ${test.teacherName}  ·  📚 ${test.fan}  ·  ❓ ${test.questions.length} questions`
+  hide('sc-tests'); show('sc-exam'); renderQ()
 }
 
 function renderQ(){
-  const q   = exam.questions[curQ]
-  const tot = exam.questions.length
-  const answered = Object.keys(answers).length
-
-  // progress
-  const pct = Math.round((answered/tot)*100)
-  $('prog-label').textContent = `${answered}/${tot} javob berildi`
-  $('prog-pct').textContent   = pct+'%'
-  $('prog-bar').style.width   = pct+'%'
-  $('q-counter').textContent  = `${curQ+1} / ${tot}`
-
-  // dots
-  $('q-dots').innerHTML = exam.questions.map((_,i)=>{
+  const q=exam.questions[curQ], tot=exam.questions.length
+  const answered=Object.keys(answers).length
+  const pct=Math.round((answered/tot)*100)
+  $('prog-label').textContent=`${answered}/${tot} answered`
+  $('prog-pct').textContent=pct+'%'
+  $('prog-bar').style.width=pct+'%'
+  $('q-counter').textContent=`${curQ+1} / ${tot}`
+  $('q-dots').innerHTML=exam.questions.map((_,i)=>{
     let cls='q-dot'
     if(answers[i]!==undefined) cls+=' answered'
     if(i===curQ) cls+=' current'
     return `<div class="${cls}" onclick="jumpQ(${i})">${i+1}</div>`
   }).join('')
-
-  // question card
-  const isOpen = q.type==='open'
-  let html = `<div class="question-card">
-    <div class="q-num">Savol ${curQ+1} / ${tot}</div>
+  const isOpen=q.type==='open'
+  let html=`<div class="question-card">
+    <div class="q-num">Question ${curQ+1} / ${tot}</div>
     <div class="q-text">${q.text}</div>`
-
   if(isOpen){
-    const val = answers[curQ]||''
-    html += `<div class="open-answer">
+    const val=answers[curQ]||''
+    html+=`<div class="open-answer">
       <label style="font-size:.8rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.3px;margin-bottom:6px;display:block">
-        Javobingizni yozing
+        Write your answer below
       </label>
-      <textarea id="open-ans" placeholder="Bu yerga yozing..."
+      <textarea id="open-ans" placeholder="Type your answer here..."
         onInput="answers[${curQ}]=this.value;updateNav()">${val}</textarea>
     </div>`
   } else {
-    const sel = answers[curQ]
-    const keys = ['a','b','c','d']
-    const labels = {a:'A',b:'B',c:'C',d:'D'}
+    const sel=answers[curQ]
+    const keys=['a','b','c','d'], labels={a:'A',b:'B',c:'C',d:'D'}
     keys.forEach(k=>{
-      const checked = sel===k ? 'checked' : ''
-      const selCls  = sel===k ? ' selected' : ''
-      html += `<label class="option-label${selCls}">
-        <input type="radio" name="opt" value="${k}" ${checked}
-          onchange="selectAns('${k}')"/>
+      const checked=sel===k?'checked':'', selCls=sel===k?' selected':''
+      html+=`<label class="option-label${selCls}">
+        <input type="radio" name="opt" value="${k}" ${checked} onchange="selectAns('${k}')"/>
         <span class="opt-key">${labels[k]}</span>
         <span>${q.options[k]}</span>
       </label>`
     })
   }
-  html += '</div>'
-  $('question-card').innerHTML = html
-
-  updateNav()
+  html+='</div>'
+  $('question-card').innerHTML=html; updateNav()
 }
 
 function updateNav(){
-  const tot = exam.questions.length
-  const allDone = Object.keys(answers).length === tot
-
-  $('btn-prev').disabled = curQ===0
-  $('btn-prev').style.opacity = curQ===0 ? '.4' : '1'
-
-  if(curQ === tot-1){
-    hide('btn-next')
-  } else {
-    show('btn-next')
-  }
+  const tot=exam.questions.length, allDone=Object.keys(answers).length===tot
+  $('btn-prev').disabled=curQ===0; $('btn-prev').style.opacity=curQ===0?'.4':'1'
+  curQ===tot-1 ? hide('btn-next') : show('btn-next')
   allDone ? show('btn-finish') : hide('btn-finish')
 }
 
-function selectAns(val){
-  answers[curQ] = val
-  renderQ()
-}
-
+function selectAns(val){ answers[curQ]=val; renderQ() }
 function jumpQ(i){ curQ=i; renderQ() }
-function prevQ(){  if(curQ>0){ curQ--; renderQ() } }
-function nextQ(){  if(curQ<exam.questions.length-1){ curQ++; renderQ() } }
+function prevQ(){ if(curQ>0){ curQ--; renderQ() } }
+function nextQ(){ if(curQ<exam.questions.length-1){ curQ++; renderQ() } }
 
-/* ════════════════════════════════════════
-   SCREEN 4 — FINISH  (no score shown)
-════════════════════════════════════════ */
 function finishExam(){
-  if(!confirm('Testni yakunlashni tasdiqlaysizmi?')) return
-
-  // calculate internally (for teacher)
+  if(!confirm('Submit the test? You cannot undo this.')) return
   let score=0, total=0
-  const answerLog = exam.questions.map((q,i)=>{
-    const given = answers[i] !== undefined ? answers[i] : null
+  const answerLog=exam.questions.map((q,i)=>{
+    const given=answers[i]!==undefined?answers[i]:null
     if(q.type==='test'){
       total++
-      const isOk = given===q.correct
-      if(isOk) score++
-      return {
-        type:'test',
-        question: q.text,
-        given,
-        givenText: given ? q.options[given] : null,
-        correct: q.correct,
-        correctText: q.options[q.correct],
-        isOk
-      }
-    } else {
-      // open question — no auto score
-      return {
-        type:'open',
-        question: q.text,
-        given: given||''
-      }
+      const isOk=given===q.correct; if(isOk) score++
+      return { type:'test', question:q.text, given, givenText:given?q.options[given]:null,
+        correct:q.correct, correctText:q.options[q.correct], isOk }
     }
+    return { type:'open', question:q.text, given:given||'' }
   })
-
-  const pct   = total>0 ? Math.round((score/total)*100) : null
-  const grade = pct===null ? 'Ochiq savol' :
-                pct>=86 ? "5 (A'lo)" :
-                pct>=71 ? "4 (Yaxshi)" :
-                pct>=56 ? "3 (Qoniqarli)" : "2 (Qoniqarsiz)"
-
-  // save result
-  const result = {
-    id:          'r_'+Date.now(),
-    testId:      exam.id,
-    testNomi:    exam.nomi,
-    teacherId:   exam.teacherId,
-    studentName: student.fullName,
-    sinf:        student.sinf,
-    harf:        student.harf,
-    score, total, pct, grade,
-    answers:     answerLog,
-    time:        Date.now(),
-    dateStr:     new Date().toLocaleString('uz')
+  const pct=total>0?Math.round((score/total)*100):null
+  const grade=pct===null?'Open-ended':pct>=86?"5 (Excellent)":pct>=71?"4 (Good)":pct>=56?"3 (Satisfactory)":"2 (Unsatisfactory)"
+  const result={
+    id:'r_'+Date.now(), testId:exam.id, testNomi:exam.nomi, teacherId:exam.teacherId,
+    studentName:student.fullName, sinf:student.sinf, harf:student.harf,
+    score, total, pct, grade, answers:answerLog,
+    time:Date.now(), dateStr:new Date().toLocaleString('en')
   }
-  const all = LS.results()
-  all.push(result)
-  LS.saveRes(all)
-
-  // Show ONLY "topshirildi" — no score
-  $('done-text').innerHTML =
-    `<strong>${student.fullName}</strong> — ${student.sinf}-${student.harf} sinf<br/>
+  const all=LS.results(); all.push(result); LS.saveRes(all)
+  $('done-text').innerHTML=
+    `<strong>${student.fullName}</strong> — Grade ${student.sinf}-${student.harf}<br/>
      <span style="color:var(--muted);font-size:.88rem">
        📋 ${exam.nomi}<br/>
-       Natijangiz o'qituvchi tomonidan ko'rib chiqiladi.
+       Your result will be reviewed by your teacher.
      </span>`
-
-  hide('sc-exam')
-  show('sc-done')
+  hide('sc-exam'); show('sc-done')
 }
 
-function backToTests(){
-  hide('sc-done')
-  show('sc-tests')
-  renderTestList()
-}
+function backToTests(){ hide('sc-done'); show('sc-tests'); renderTestList() }
 </script>
 </body>
 </html>

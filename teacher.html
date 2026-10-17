@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="uz">
+<html lang="en">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>O'qituvchi — Al Beruniy International School</title>
+  <title>Teacher — Al Beruniy International School</title>
   <link rel="stylesheet" href="style.css"/>
   <style>
     .test-card{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:12px;border:2px solid var(--border);background:#fff;margin-bottom:10px;transition:all .2s}
@@ -39,7 +39,6 @@
     .cor-row{display:flex;gap:10px;align-items:center;margin-top:8px;flex-wrap:wrap}
     .cor-row>label{font-size:.72rem;font-weight:700;color:var(--muted);text-transform:uppercase}
     .cor-row select{width:auto;padding:7px 12px;font-size:.85rem}
-    /* modal */
     .modal-overlay{position:fixed;inset:0;background:rgba(10,22,40,.55);backdrop-filter:blur(4px);z-index:999;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .25s}
     .modal-overlay.open{opacity:1;pointer-events:all}
     .modal{background:#fff;border-radius:22px;max-width:640px;width:100%;max-height:88vh;overflow-y:auto;box-shadow:var(--shadow-lg);transform:translateY(20px);transition:transform .3s}
@@ -66,170 +65,169 @@
     <div class="topbar-logo">AB</div>
     <div class="topbar-title">
       <span>Al Beruniy International School</span>
-      <span>O'qituvchi kabineti</span>
+      <span>Teacher Dashboard</span>
     </div>
   </div>
   <div class="topbar-right" id="topbar-right">
-    <a href="index.html">← Bosh sahifa</a>
+    <a href="index.html">← Home</a>
   </div>
 </header>
 
-<!-- ============================================================  AUTH  -->
+<!-- AUTH -->
 <div id="auth-screen">
   <div class="auth-wrap">
     <div class="auth-card">
       <div class="auth-head">
         <div class="auth-icon">👨‍🏫</div>
-        <h2>O'qituvchi kabineti</h2>
-        <p>Tizimga kirish yoki ro'yxatdan o'tish</p>
+        <h2>Teacher Portal</h2>
+        <p>Sign in or create an account</p>
       </div>
 
       <div class="tabs">
-        <button class="tab-btn active" onclick="authTab('login',this)">🔑 Kirish</button>
-        <button class="tab-btn"        onclick="authTab('reg',this)">📝 Ro'yxat</button>
+        <button class="tab-btn active" onclick="authTab('login',this)">🔑 Sign In</button>
+        <button class="tab-btn"        onclick="authTab('reg',this)">📝 Register</button>
       </div>
 
       <!-- LOGIN -->
       <div id="tp-login" class="tab-panel active">
         <div id="login-alert"></div>
-        <div class="form-group"><label>Ism</label>
-          <input type="text" id="l-ism" placeholder="Ismingiz"/></div>
-        <div class="form-group"><label>Familiya</label>
-          <input type="text" id="l-fam" placeholder="Familiyangiz"/></div>
-        <div class="form-group"><label>Fan</label>
-          <select id="l-fan"><option value="">— Fanni tanlang —</option>
-            <option value="Matematika">Matematika</option>
-            <option value="Fizika">Fizika</option>
-            <option value="Kimyo">Kimyo</option>
-            <option value="Biologiya">Biologiya</option>
-            <option value="Ona tili va adabiyot">Ona tili va adabiyot</option>
-            <option value="Ingliz tili">Ingliz tili</option>
-            <option value="Rus tili">Rus tili</option>
-            <option value="Tarix">Tarix</option>
-            <option value="Geografiya">Geografiya</option>
-            <option value="Informatika">Informatika</option>
-            <option value="Jismoniy tarbiya">Jismoniy tarbiya</option>
-            <option value="Musiqa">Musiqa</option>
-            <option value="Tasviriy sanat">Tasviriy san'at</option>
+        <div class="form-group"><label>First Name</label>
+          <input type="text" id="l-ism" placeholder="Your first name"/></div>
+        <div class="form-group"><label>Last Name</label>
+          <input type="text" id="l-fam" placeholder="Your last name"/></div>
+        <div class="form-group"><label>Subject</label>
+          <select id="l-fan">
+            <option value="">— Select subject —</option>
+            <option value="Mathematics">Mathematics</option>
+            <option value="Physics">Physics</option>
+            <option value="Chemistry">Chemistry</option>
+            <option value="Biology">Biology</option>
+            <option value="Literature">Literature</option>
+            <option value="English">English</option>
+            <option value="Russian">Russian</option>
+            <option value="History">History</option>
+            <option value="Geography">Geography</option>
+            <option value="Computer Science">Computer Science</option>
+            <option value="Physical Education">Physical Education</option>
+            <option value="Music">Music</option>
+            <option value="Art">Art</option>
           </select></div>
-        <div class="form-group"><label>Parol</label>
-          <input type="password" id="l-par" placeholder="Parolingiz"
+        <div class="form-group"><label>Password</label>
+          <input type="password" id="l-par" placeholder="Your password"
             onkeydown="if(event.key==='Enter')doLogin()"/></div>
-        <button class="btn btn-primary btn-block" onclick="doLogin()">🔑 Kirish</button>
+        <button class="btn btn-primary btn-block" onclick="doLogin()">🔑 Sign In</button>
       </div>
 
       <!-- REGISTER -->
       <div id="tp-reg" class="tab-panel">
         <div id="reg-alert"></div>
-        <div class="form-group"><label>Ism</label>
-          <input type="text" id="r-ism" placeholder="Ismingiz"/></div>
-        <div class="form-group"><label>Familiya</label>
-          <input type="text" id="r-fam" placeholder="Familiyangiz"/></div>
-        <div class="form-group"><label>Fan</label>
-          <select id="r-fan"><option value="">— Fanni tanlang —</option>
-            <option value="Matematika">Matematika</option>
-            <option value="Fizika">Fizika</option>
-            <option value="Kimyo">Kimyo</option>
-            <option value="Biologiya">Biologiya</option>
-            <option value="Ona tili va adabiyot">Ona tili va adabiyot</option>
-            <option value="Ingliz tili">Ingliz tili</option>
-            <option value="Rus tili">Rus tili</option>
-            <option value="Tarix">Tarix</option>
-            <option value="Geografiya">Geografiya</option>
-            <option value="Informatika">Informatika</option>
-            <option value="Jismoniy tarbiya">Jismoniy tarbiya</option>
-            <option value="Musiqa">Musiqa</option>
-            <option value="Tasviriy sanat">Tasviriy san'at</option>
+        <div class="form-group"><label>First Name</label>
+          <input type="text" id="r-ism" placeholder="Your first name"/></div>
+        <div class="form-group"><label>Last Name</label>
+          <input type="text" id="r-fam" placeholder="Your last name"/></div>
+        <div class="form-group"><label>Subject</label>
+          <select id="r-fan">
+            <option value="">— Select subject —</option>
+            <option value="Mathematics">Mathematics</option>
+            <option value="Physics">Physics</option>
+            <option value="Chemistry">Chemistry</option>
+            <option value="Biology">Biology</option>
+            <option value="Literature">Literature</option>
+            <option value="English">English</option>
+            <option value="Russian">Russian</option>
+            <option value="History">History</option>
+            <option value="Geography">Geography</option>
+            <option value="Computer Science">Computer Science</option>
+            <option value="Physical Education">Physical Education</option>
+            <option value="Music">Music</option>
+            <option value="Art">Art</option>
           </select></div>
-        <div class="form-group"><label>Parol</label>
-          <input type="password" id="r-par" placeholder="Kamida 4 ta belgi"/></div>
-        <div class="form-group"><label>Parolni tasdiqlang</label>
-          <input type="password" id="r-par2" placeholder="Qaytaring"/></div>
-        <button class="btn btn-gold btn-block" onclick="doRegister()">✅ Ro'yxatdan o'tish</button>
+        <div class="form-group"><label>Password</label>
+          <input type="password" id="r-par" placeholder="At least 4 characters"/></div>
+        <div class="form-group"><label>Confirm Password</label>
+          <input type="password" id="r-par2" placeholder="Repeat password"/></div>
+        <button class="btn btn-gold btn-block" onclick="doRegister()">✅ Create Account</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ============================================================  DASHBOARD  -->
+<!-- DASHBOARD -->
 <div id="dashboard" style="display:none">
   <div class="page-wrap">
 
-    <!-- Welcome banner -->
     <div class="welcome-banner">
       <div class="wb-avatar">👨‍🏫</div>
       <div class="wb-info">
         <h2 id="wb-name">—</h2>
         <p id="wb-fan">—</p>
       </div>
-      <div class="wb-badge" id="wb-badge">📚 Fan</div>
-      <button class="btn btn-ghost btn-sm" style="margin-left:auto"
-        onclick="logout()">🚪 Chiqish</button>
+      <div class="wb-badge" id="wb-badge">Subject</div>
+      <button class="btn btn-ghost btn-sm" style="margin-left:auto" onclick="logout()">🚪 Sign Out</button>
     </div>
 
-    <!-- Dashboard nav -->
     <div class="dash-nav">
-      <button class="dash-nav-btn active" onclick="goPanel('p-tests',this)">📋 Testlarim</button>
-      <button class="dash-nav-btn"        onclick="goPanel('p-add',this)">➕ Test qo'shish</button>
-      <button class="dash-nav-btn"        onclick="goPanel('p-students',this)">👦 O'quvchilar</button>
-      <button class="dash-nav-btn"        onclick="goPanel('p-results',this)">📊 Natijalar</button>
+      <button class="dash-nav-btn active" onclick="goPanel('p-tests',this)">📋 My Tests</button>
+      <button class="dash-nav-btn"        onclick="goPanel('p-add',this)">➕ Add Test</button>
+      <button class="dash-nav-btn"        onclick="goPanel('p-students',this)">👦 Students</button>
+      <button class="dash-nav-btn"        onclick="goPanel('p-results',this)">📊 Results</button>
     </div>
 
-    <!-- ─── MY TESTS ─── -->
+    <!-- MY TESTS -->
     <div id="p-tests" class="dash-panel active">
       <div class="card">
-        <div class="section-title">📋 Mening testlarim</div>
+        <div class="section-title">📋 My Tests</div>
         <div id="my-tests"></div>
       </div>
     </div>
 
-    <!-- ─── ADD TEST ─── -->
+    <!-- ADD TEST -->
     <div id="p-add" class="dash-panel">
       <div class="card">
-        <div class="section-title">➕ Yangi test yaratish</div>
+        <div class="section-title">➕ Create New Test</div>
         <div id="add-alert"></div>
-        <div class="form-group"><label>Test nomi</label>
-          <input type="text" id="t-nomi" placeholder="Masalan: 7-sinf Fizika – 1-chorak"/></div>
+        <div class="form-group"><label>Test Name</label>
+          <input type="text" id="t-nomi" placeholder="e.g. Grade 7 Physics – Quarter 1"/></div>
         <div class="form-row">
-          <div class="form-group"><label>Sinf</label>
+          <div class="form-group"><label>Grade</label>
             <select id="t-sinf">
-              <option value="">Sinf</option>
+              <option value="">Grade</option>
               <option>1</option><option>2</option><option>3</option><option>4</option>
               <option>5</option><option>6</option><option>7</option><option>8</option>
               <option>9</option><option>10</option><option>11</option>
             </select></div>
-          <div class="form-group"><label>Sinf harfi</label>
+          <div class="form-group"><label>Class</label>
             <select id="t-harf">
-              <option value="">Harf</option>
+              <option value="">Class</option>
               <option>A</option><option>B</option><option>C</option>
-              <option>D</option><option>E</option><option>Barcha</option>
+              <option>D</option><option>E</option><option>All</option>
             </select></div>
         </div>
         <hr class="divider"/>
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
-          <div style="font-weight:800;color:var(--text);font-size:.95rem">📝 Savollar</div>
-          <button class="btn btn-outline btn-sm" onclick="addQ()">+ Savol qo'shish</button>
+          <div style="font-weight:800;color:var(--text);font-size:.95rem">📝 Questions</div>
+          <button class="btn btn-outline btn-sm" onclick="addQ()">+ Add Question</button>
         </div>
         <div id="q-container"></div>
-        <button class="btn btn-primary btn-block" style="margin-top:8px" onclick="saveTest()">💾 Testni saqlash</button>
+        <button class="btn btn-primary btn-block" style="margin-top:8px" onclick="saveTest()">💾 Save Test</button>
       </div>
     </div>
 
-    <!-- ─── STUDENTS ─── -->
+    <!-- STUDENTS -->
     <div id="p-students" class="dash-panel">
       <div class="card">
-        <div class="section-title">👦 Test topshirgan o'quvchilar</div>
+        <div class="section-title">👦 Students Who Submitted Tests</div>
         <div id="students-list"></div>
       </div>
     </div>
 
-    <!-- ─── RESULTS ─── -->
+    <!-- RESULTS -->
     <div id="p-results" class="dash-panel">
       <div class="card">
-        <div class="section-title">📊 Batafsil natijalar</div>
+        <div class="section-title">📊 Detailed Results</div>
         <div style="margin-bottom:16px">
           <select id="filter-test" style="max-width:340px" onchange="renderResults()">
-            <option value="">— Barcha testlar —</option>
+            <option value="">— All Tests —</option>
           </select>
         </div>
         <div id="results-list"></div>
@@ -239,7 +237,7 @@
   </div>
 </div>
 
-<!-- ============================================================  MODAL  -->
+<!-- MODAL -->
 <div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
   <div class="modal" id="modal-box">
     <div class="modal-head">
@@ -258,7 +256,6 @@
 </footer>
 
 <script>
-/* ── STORAGE ── */
 const LS = {
   teachers: ()=> JSON.parse(localStorage.getItem('mp_teachers')||'[]'),
   setTeachers: d=> localStorage.setItem('mp_teachers', JSON.stringify(d)),
@@ -273,50 +270,34 @@ const $  = id => document.getElementById(id)
 const al = (id, msg, t='error') => $(id).innerHTML = `<div class="alert alert-${t}">${msg}</div>`
 const clr= id => $(id).innerHTML = ''
 
-/* ── AUTH TABS ── */
 function authTab(tab, btn){
-  ['login','reg'].forEach(t=>{
-    $('tp-'+t).classList.toggle('active', t===tab)
-  })
+  ['login','reg'].forEach(t=> $('tp-'+t).classList.toggle('active', t===tab))
   document.querySelectorAll('#auth-screen .tab-btn').forEach(b=>b.classList.remove('active'))
   btn.classList.add('active')
 }
 
-/* ── REGISTER ── */
 function doRegister(){
   clr('reg-alert')
-  const ism=  $('r-ism').value.trim()
-  const fam=  $('r-fam').value.trim()
-  const fan=  $('r-fan').value
-  const par=  $('r-par').value
-  const par2= $('r-par2').value
-
-  if(!ism||!fam||!fan||!par||!par2) return al('reg-alert','⚠️ Barcha maydonlarni to\'ldiring')
-  if(par.length<4)  return al('reg-alert','⚠️ Parol kamida 4 ta belgi')
-  if(par!==par2)    return al('reg-alert','⚠️ Parollar mos emas')
-
+  const ism= $('r-ism').value.trim(), fam= $('r-fam').value.trim()
+  const fan= $('r-fan').value, par= $('r-par').value, par2= $('r-par2').value
+  if(!ism||!fam||!fan||!par||!par2) return al('reg-alert','⚠️ Please fill in all fields')
+  if(par.length<4)  return al('reg-alert','⚠️ Password must be at least 4 characters')
+  if(par!==par2)    return al('reg-alert','⚠️ Passwords do not match')
   const list= LS.teachers()
   if(list.find(t=> t.ism.toLowerCase()===ism.toLowerCase() && t.familiya.toLowerCase()===fam.toLowerCase() && t.fan===fan))
-    return al('reg-alert','⚠️ Bu o\'qituvchi allaqachon ro\'yxatdan o\'tgan')
-
+    return al('reg-alert','⚠️ This teacher is already registered')
   const teacher={ id:'t_'+Date.now(), ism, familiya:fam, fan, parol:par }
-  list.push(teacher)
-  LS.setTeachers(list)
-  al('reg-alert','✅ Muvaffaqiyatli ro\'yxatdan o\'tdingiz! Endi kiring.','success')
-  $('l-ism').value= ism; $('l-fam').value= fam; $('l-fan').value= fan
+  list.push(teacher); LS.setTeachers(list)
+  al('reg-alert','✅ Registered successfully! Please sign in.','success')
+  $('l-ism').value=ism; $('l-fam').value=fam; $('l-fan').value=fan
   authTab('login', document.querySelector('#auth-screen .tab-btn'))
 }
 
-/* ── LOGIN ── */
 function doLogin(){
   clr('login-alert')
-  const ism= $('l-ism').value.trim()
-  const fam= $('l-fam').value.trim()
-  const fan= $('l-fan').value
-  const par= $('l-par').value
-
-  if(!ism||!fam||!fan||!par) return al('login-alert','⚠️ Barcha maydonlarni to\'ldiring')
-
+  const ism= $('l-ism').value.trim(), fam= $('l-fam').value.trim()
+  const fan= $('l-fan').value, par= $('l-par').value
+  if(!ism||!fam||!fan||!par) return al('login-alert','⚠️ Please fill in all fields')
   const teacher= LS.teachers().find(t=>
     t.ism.trim().toLowerCase()===ism.toLowerCase() &&
     t.familiya.trim().toLowerCase()===fam.toLowerCase() &&
@@ -327,47 +308,42 @@ function doLogin(){
       t.ism.trim().toLowerCase()===ism.toLowerCase() &&
       t.familiya.trim().toLowerCase()===fam.toLowerCase()
     )
-    if(byName && byName.fan!==fan) return al('login-alert','❌ Fan noto\'g\'ri')
-    if(byName) return al('login-alert','❌ Parol noto\'g\'ri')
-    return al('login-alert','❌ O\'qituvchi topilmadi. Avval ro\'yxatdan o\'ting.')
+    if(byName && byName.fan!==fan) return al('login-alert','❌ Incorrect subject')
+    if(byName) return al('login-alert','❌ Incorrect password')
+    return al('login-alert','❌ Teacher not found. Please register first.')
   }
-  LS.setMe(teacher)
-  openDashboard(teacher)
+  LS.setMe(teacher); openDashboard(teacher)
 }
 
 function logout(){ LS.setMe(null); location.reload() }
 
-/* ── DASHBOARD ── */
 function openDashboard(t){
   $('auth-screen').style.display='none'
   $('dashboard').style.display='block'
   $('wb-name').textContent= t.ism+' '+t.familiya
-  $('wb-fan').textContent = '📚 '+t.fan+' fani o\'qituvchisi'
+  $('wb-fan').textContent = '📚 '+t.fan+' teacher'
   $('wb-badge').textContent= t.fan
   $('topbar-right').innerHTML=
     `<span class="topbar-user">${t.ism} ${t.familiya}</span>
-     <a href="index.html">← Bosh sahifa</a>`
+     <a href="index.html">← Home</a>`
   renderMyTests(t)
 }
 
 function goPanel(id, btn){
   document.querySelectorAll('.dash-panel').forEach(p=>p.classList.remove('active'))
   document.querySelectorAll('.dash-nav-btn').forEach(b=>b.classList.remove('active'))
-  $(id).classList.add('active')
-  btn.classList.add('active')
-  const t= LS.me()
-  if(!t) return
+  $(id).classList.add('active'); btn.classList.add('active')
+  const t= LS.me(); if(!t) return
   if(id==='p-tests')    renderMyTests(t)
   if(id==='p-students') renderStudents(t)
   if(id==='p-results')  { fillFilterTest(t); renderResults() }
 }
 
-/* ── MY TESTS ── */
 function renderMyTests(t){
   const tests= LS.tests().filter(x=>x.teacherId===t.id)
   const el= $('my-tests')
   if(!tests.length){
-    el.innerHTML=`<div class="empty-state"><span class="es-icon">📭</span><p>Hozircha test yo'q. "Test qo'shish" bo'limiga o'ting.</p></div>`
+    el.innerHTML=`<div class="empty-state"><span class="es-icon">📭</span><p>No tests yet. Go to "Add Test" to create one.</p></div>`
     return
   }
   el.innerHTML= tests.map(ts=>{
@@ -376,7 +352,7 @@ function renderMyTests(t){
       <div class="test-card-icon">📋</div>
       <div class="test-card-body">
         <h4>${ts.nomi}</h4>
-        <p>${ts.sinf}-${ts.harf} sinf &nbsp;·&nbsp; ${ts.questions.length} savol &nbsp;·&nbsp; ${cnt} natija</p>
+        <p>Grade ${ts.sinf}-${ts.harf} &nbsp;·&nbsp; ${ts.questions.length} questions &nbsp;·&nbsp; ${cnt} results</p>
       </div>
       <div class="test-card-right">
         <span class="badge badge-blue">${ts.sinf}-${ts.harf}</span>
@@ -387,44 +363,39 @@ function renderMyTests(t){
 }
 
 function delTest(id){
-  if(!confirm('Testni o\'chirasizmi?')) return
-  LS.setTests(LS.tests().filter(t=>t.id!==id))
-  renderMyTests(LS.me())
+  if(!confirm('Delete this test?')) return
+  LS.setTests(LS.tests().filter(t=>t.id!==id)); renderMyTests(LS.me())
 }
 
-/* ── ADD TEST ── */
 let qc=0
-
 function addQ(){
-  qc++
-  const n=qc
+  qc++; const n=qc
   const div=document.createElement('div')
-  div.className='q-block-add'
-  div.id='qb-'+n
+  div.className='q-block-add'; div.id='qb-'+n
   div.innerHTML=`
     <div class="q-block-head">
-      <span class="q-label-tag">Savol #${n}</span>
+      <span class="q-label-tag">Question #${n}</span>
       <div style="display:flex;gap:8px;align-items:center">
         <div class="q-type-wrap">
-          <button class="qtype-btn on" id="qbt-test-${n}" onclick="switchQType(${n},'test')">Test</button>
-          <button class="qtype-btn"    id="qbt-open-${n}" onclick="switchQType(${n},'open')">Ochiq</button>
+          <button class="qtype-btn on" id="qbt-test-${n}" onclick="switchQType(${n},'test')">Multiple Choice</button>
+          <button class="qtype-btn"    id="qbt-open-${n}" onclick="switchQType(${n},'open')">Open-ended</button>
         </div>
         <button class="btn btn-danger btn-sm" onclick="rmQ(${n})">✕</button>
       </div>
     </div>
     <div class="form-group">
-      <label>Savol matni</label>
-      <textarea id="qt-${n}" placeholder="Savol matnini yozing..."></textarea>
+      <label>Question Text</label>
+      <textarea id="qt-${n}" placeholder="Write the question here..."></textarea>
     </div>
     <div id="qopts-${n}">
       <div class="opts-wrap">
-        <div class="opt-r"><span class="ok">A</span><input type="text" id="qa-${n}" placeholder="A javob"/></div>
-        <div class="opt-r"><span class="ok">B</span><input type="text" id="qb-${n}" placeholder="B javob"/></div>
-        <div class="opt-r"><span class="ok">C</span><input type="text" id="qc-${n}" placeholder="C javob"/></div>
-        <div class="opt-r"><span class="ok">D</span><input type="text" id="qd-${n}" placeholder="D javob"/></div>
+        <div class="opt-r"><span class="ok">A</span><input type="text" id="qa-${n}" placeholder="Option A"/></div>
+        <div class="opt-r"><span class="ok">B</span><input type="text" id="qb-${n}" placeholder="Option B"/></div>
+        <div class="opt-r"><span class="ok">C</span><input type="text" id="qc-${n}" placeholder="Option C"/></div>
+        <div class="opt-r"><span class="ok">D</span><input type="text" id="qd-${n}" placeholder="Option D"/></div>
       </div>
       <div class="cor-row">
-        <label>✅ To'g'ri javob:</label>
+        <label>✅ Correct Answer:</label>
         <select id="qcor-${n}">
           <option value="a">A</option><option value="b">B</option>
           <option value="c">C</option><option value="d">D</option>
@@ -439,17 +410,17 @@ function switchQType(n, type){
   $('qbt-open-'+n).classList.toggle('on', type==='open')
   const opts= $('qopts-'+n)
   if(type==='open'){
-    opts.innerHTML=`<div class="form-group"><label>O'quvchi erkin javob yozadi (siz tekshirasiz)</label></div>`
+    opts.innerHTML=`<div class="form-group"><label>Student writes a free-form answer (you review it manually)</label></div>`
   } else {
     opts.innerHTML=`
       <div class="opts-wrap">
-        <div class="opt-r"><span class="ok">A</span><input type="text" id="qa-${n}" placeholder="A javob"/></div>
-        <div class="opt-r"><span class="ok">B</span><input type="text" id="qb-${n}" placeholder="B javob"/></div>
-        <div class="opt-r"><span class="ok">C</span><input type="text" id="qc-${n}" placeholder="C javob"/></div>
-        <div class="opt-r"><span class="ok">D</span><input type="text" id="qd-${n}" placeholder="D javob"/></div>
+        <div class="opt-r"><span class="ok">A</span><input type="text" id="qa-${n}" placeholder="Option A"/></div>
+        <div class="opt-r"><span class="ok">B</span><input type="text" id="qb-${n}" placeholder="Option B"/></div>
+        <div class="opt-r"><span class="ok">C</span><input type="text" id="qc-${n}" placeholder="Option C"/></div>
+        <div class="opt-r"><span class="ok">D</span><input type="text" id="qd-${n}" placeholder="Option D"/></div>
       </div>
       <div class="cor-row">
-        <label>✅ To'g'ri javob:</label>
+        <label>✅ Correct Answer:</label>
         <select id="qcor-${n}">
           <option value="a">A</option><option value="b">B</option>
           <option value="c">C</option><option value="d">D</option>
@@ -463,23 +434,18 @@ function rmQ(n){ const e=$('qb-'+n); if(e) e.remove() }
 function saveTest(){
   clr('add-alert')
   const teacher= LS.me(); if(!teacher) return
-  const nomi= $('t-nomi').value.trim()
-  const sinf= $('t-sinf').value
-  const harf= $('t-harf').value
-  if(!nomi||!sinf||!harf) return al('add-alert','⚠️ Test nomi, sinf va harfni kiriting')
-
+  const nomi= $('t-nomi').value.trim(), sinf= $('t-sinf').value, harf= $('t-harf').value
+  if(!nomi||!sinf||!harf) return al('add-alert','⚠️ Please enter test name, grade and class')
   const rows= document.querySelectorAll('#q-container .q-block-add')
-  if(!rows.length) return al('add-alert','⚠️ Kamida 1 ta savol qo\'shing')
-
+  if(!rows.length) return al('add-alert','⚠️ Add at least 1 question')
   const questions=[]; let valid=true
   rows.forEach(row=>{
     const n= row.id.replace('qb-','')
     const isOpen= $('qbt-open-'+n)?.classList.contains('on')
     const text= $('qt-'+n)?.value.trim()
     if(!text){ valid=false; return }
-    if(isOpen){
-      questions.push({ type:'open', text })
-    } else {
+    if(isOpen){ questions.push({ type:'open', text }) }
+    else {
       const a=$('qa-'+n)?.value.trim(), b=$('qb-'+n)?.value.trim()
       const c=$('qc-'+n)?.value.trim(), d=$('qd-'+n)?.value.trim()
       const cor=$('qcor-'+n)?.value
@@ -487,32 +453,29 @@ function saveTest(){
       questions.push({ type:'test', text, options:{a,b,c,d}, correct:cor })
     }
   })
-  if(!valid) return al('add-alert','⚠️ Barcha savol va variantlarni to\'ldiring')
-
+  if(!valid) return al('add-alert','⚠️ Please fill in all questions and options')
   const tests= LS.tests()
-  tests.push({ id:'ts_'+Date.now(), teacherId:teacher.id, teacherName:teacher.ism+' '+teacher.familiya,
-    fan:teacher.fan, nomi, sinf, harf, questions, createdAt:new Date().toLocaleString('uz') })
+  tests.push({ id:'ts_'+Date.now(), teacherId:teacher.id,
+    teacherName:teacher.ism+' '+teacher.familiya, fan:teacher.fan,
+    nomi, sinf, harf, questions, createdAt:new Date().toLocaleString('en') })
   LS.setTests(tests)
   $('t-nomi').value=''; $('t-sinf').value=''; $('t-harf').value=''
   $('q-container').innerHTML=''; qc=0
-  al('add-alert','✅ Test saqlandi!','success')
+  al('add-alert','✅ Test saved successfully!','success')
   renderMyTests(teacher)
 }
 
-/* ── STUDENTS ── */
 function renderStudents(teacher){
   const myIds= LS.tests().filter(t=>t.teacherId===teacher.id).map(t=>t.id)
   const res=   LS.results().filter(r=>myIds.includes(r.testId))
   const el=    $('students-list')
   if(!res.length){
-    el.innerHTML=`<div class="empty-state"><span class="es-icon">👥</span><p>Hozircha o'quvchi test topshirmagan.</p></div>`
+    el.innerHTML=`<div class="empty-state"><span class="es-icon">👥</span><p>No students have submitted a test yet.</p></div>`
     return
   }
-  // unique students
   const seen=new Set(); const uniq=[]
   res.forEach(r=>{ const k=r.studentName+'|'+r.sinf+'|'+r.harf
     if(!seen.has(k)){ seen.add(k); uniq.push(r) } })
-
   el.innerHTML= uniq.map(r=>{
     const cnt= res.filter(x=>x.studentName===r.studentName&&x.sinf===r.sinf&&x.harf===r.harf).length
     const initials= r.studentName.split(' ').map(w=>w[0]||'').join('').slice(0,2).toUpperCase()
@@ -520,29 +483,25 @@ function renderStudents(teacher){
       <div class="student-avatar">${initials}</div>
       <div class="student-card-body">
         <h4>${r.studentName}</h4>
-        <p>${r.sinf}-${r.harf} sinf &nbsp;·&nbsp; ${cnt} ta test topshirgan</p>
+        <p>Grade ${r.sinf}-${r.harf} &nbsp;·&nbsp; ${cnt} test(s) submitted</p>
       </div>
       <div style="flex-shrink:0;display:flex;align-items:center;gap:8px">
-        <span class="badge badge-navy">${cnt} test</span>
-        <span style="color:var(--blue);font-size:.85rem;font-weight:700">Ko'rish →</span>
+        <span class="badge badge-navy">${cnt} test(s)</span>
+        <span style="color:var(--blue);font-size:.85rem;font-weight:700">View →</span>
       </div>
     </div>`
   }).join('')
 }
 
-/* ── STUDENT DETAIL MODAL ── */
 function showStudentDetail(encodedName, sinf, harf){
   const name= decodeURIComponent(encodedName)
   const teacher= LS.me(); if(!teacher) return
   const myIds= LS.tests().filter(t=>t.teacherId===teacher.id).map(t=>t.id)
   const allRes= LS.results().filter(r=>
-    myIds.includes(r.testId) &&
-    r.studentName===name && r.sinf===sinf && r.harf===harf
+    myIds.includes(r.testId) && r.studentName===name && r.sinf===sinf && r.harf===harf
   )
-
   $('modal-title').textContent= name
-  $('modal-sub').textContent  = sinf+'-'+harf+' sinf · '+allRes.length+' ta test topshirgan'
-
+  $('modal-sub').textContent  = 'Grade '+sinf+'-'+harf+' · '+allRes.length+' test(s) submitted'
   let html=''
   allRes.forEach(res=>{
     const pct= res.total>0 ? Math.round((res.score/res.total)*100) : 0
@@ -558,13 +517,12 @@ function showStudentDetail(encodedName, sinf, harf){
           <span class="badge badge-${btype}">${pct}% · ${res.grade||''}</span>
         </div>
       </div>`
-
     if(res.answers && res.answers.length){
       res.answers.forEach((ans,i)=>{
         if(ans.type==='open'){
           html+=`<div class="answer-item open">
             <div class="ai-q">${i+1}. ${ans.question}</div>
-            <div class="ai-a">✏️ Javob: <b>${ans.given||'(yozilmagan)'}</b></div>
+            <div class="ai-a">✏️ Answer: <b>${ans.given||'(not answered)'}</b></div>
           </div>`
         } else {
           const isOk= ans.given===ans.correct
@@ -572,32 +530,30 @@ function showStudentDetail(encodedName, sinf, harf){
             <div class="ai-q">${i+1}. ${ans.question}</div>
             <div class="ai-a">
               ${isOk
-                ? `✅ To'g'ri: <b>${ans.correct?.toUpperCase()}) ${ans.correctText||''}</b>`
-                : `❌ Berilgan: <b>${ans.given?ans.given.toUpperCase()+') '+(ans.givenText||''):'(javob yo\'q)'}</b>
-                   &nbsp;·&nbsp; ✅ To'g'ri: <b>${ans.correct?.toUpperCase()}) ${ans.correctText||''}</b>`
+                ? `✅ Correct: <b>${ans.correct?.toUpperCase()}) ${ans.correctText||''}</b>`
+                : `❌ Given: <b>${ans.given?ans.given.toUpperCase()+') '+(ans.givenText||''):'(no answer)'}</b>
+                   &nbsp;·&nbsp; ✅ Correct: <b>${ans.correct?.toUpperCase()}) ${ans.correctText||''}</b>`
               }
             </div>
           </div>`
         }
       })
     } else {
-      html+=`<div class="alert alert-info" style="font-size:.82rem">Batafsil javob ma'lumoti mavjud emas.</div>`
+      html+=`<div class="alert alert-info" style="font-size:.82rem">Detailed answer data not available.</div>`
     }
     html+='</div><hr class="divider"/>'
   })
-
-  $('modal-body').innerHTML= html || '<div class="empty-state"><p>Natija yo\'q.</p></div>'
+  $('modal-body').innerHTML= html || '<div class="empty-state"><p>No results.</p></div>'
   $('modal-overlay').classList.add('open')
 }
 
 function closeModal(e){ if(e.target===$('modal-overlay')) closeModalDirect() }
 function closeModalDirect(){ $('modal-overlay').classList.remove('open') }
 
-/* ── RESULTS ── */
 function fillFilterTest(teacher){
   const tests= LS.tests().filter(t=>t.teacherId===teacher.id)
   const sel= $('filter-test')
-  sel.innerHTML='<option value="">— Barcha testlar —</option>'
+  sel.innerHTML='<option value="">— All Tests —</option>'
   tests.forEach(t=>{ const o=document.createElement('option'); o.value=t.id; o.textContent=t.nomi; sel.appendChild(o) })
 }
 
@@ -610,7 +566,7 @@ function renderResults(){
   res= res.sort((a,b)=>b.time-a.time)
   const el= $('results-list')
   if(!res.length){
-    el.innerHTML=`<div class="empty-state"><span class="es-icon">📭</span><p>Hozircha natija yo'q.</p></div>`
+    el.innerHTML=`<div class="empty-state"><span class="es-icon">📭</span><p>No results yet.</p></div>`
     return
   }
   el.innerHTML= res.map(r=>{
@@ -620,7 +576,7 @@ function renderResults(){
       onclick="showStudentDetail('${encodeURIComponent(r.studentName)}','${r.sinf}','${r.harf}')">
       <div>
         <div class="ri-name">👦 ${r.studentName}</div>
-        <div class="ri-meta">${r.sinf}-${r.harf} sinf &nbsp;·&nbsp; 📋 ${r.testNomi} &nbsp;·&nbsp; 🕐 ${r.dateStr}</div>
+        <div class="ri-meta">Grade ${r.sinf}-${r.harf} &nbsp;·&nbsp; 📋 ${r.testNomi} &nbsp;·&nbsp; 🕐 ${r.dateStr}</div>
       </div>
       <div class="ri-score">
         <div class="big">${r.score}/${r.total}</div>
@@ -630,7 +586,6 @@ function renderResults(){
   }).join('')
 }
 
-/* ── INIT ── */
 ;(function(){
   const me= LS.me()
   if(me) openDashboard(me)
