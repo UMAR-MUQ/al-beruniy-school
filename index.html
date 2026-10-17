@@ -4,76 +4,69 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Al Beruniy International School</title>
-  <link rel="stylesheet" href="style.css?v=20261017"/>
   <style>
-    .hero-stats{display:flex;justify-content:center;gap:40px;margin-top:48px;flex-wrap:wrap}
-    .hero-stat{text-align:center}
-    .hero-stat .hs-val{font-size:1.8rem;font-weight:900;color:var(--navy)}
-    .hero-stat .hs-lbl{font-size:.75rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
-    .divider-line{width:1px;background:var(--border);align-self:stretch;margin:4px 0}
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Inter',sans-serif;background:#f0f2f5;min-height:100vh;display:flex;flex-direction:column}
+    a{text-decoration:none;color:inherit}
+
+    /* HEADER */
+    .header{background:#1e3a5f;padding:18px 24px;text-align:left}
+    .header h1{color:#fff;font-size:1.15rem;font-weight:700;letter-spacing:.2px}
+
+    /* MAIN */
+    .main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px}
+    .hero-text{text-align:center;margin-bottom:36px;max-width:520px}
+    .hero-text h2{font-size:clamp(1.5rem,4vw,2.1rem);font-weight:800;color:#1e3a5f;line-height:1.25;margin-bottom:12px}
+    .hero-text h2 span{color:#2563eb}
+    .hero-text p{font-size:.95rem;color:#64748b;line-height:1.65}
+
+    /* CARDS */
+    .cards{display:flex;flex-direction:column;gap:14px;width:100%;max-width:480px}
+    .card{background:#fff;border-radius:12px;padding:22px 24px;border:1px solid #e2e8f0;box-shadow:0 1px 6px rgba(0,0,0,.06)}
+    .card-top{margin-bottom:16px}
+    .card h3{font-size:1.05rem;font-weight:700;color:#1e3a5f;margin-bottom:5px}
+    .card p{font-size:.87rem;color:#64748b;line-height:1.5}
+    .btn-continue{display:block;width:100%;padding:12px;background:#1e3a5f;color:#fff;border:none;border-radius:8px;font-size:.93rem;font-weight:600;cursor:pointer;text-align:center;transition:background .18s;font-family:inherit}
+    .btn-continue:hover{background:#162d4a}
+
+    /* FOOTER */
+    .footer{background:#1e3a5f;color:rgba(255,255,255,.6);text-align:center;padding:14px 20px;font-size:.78rem}
+    .footer span{color:rgba(255,255,255,.85)}
   </style>
 </head>
 <body>
 
-<header class="topbar">
-  <div class="topbar-brand">
-    <div class="topbar-title">
-      <span>Al Beruniy International School</span>
-      <span>Online Learning Platform</span>
-    </div>
+<div class="header">
+  <h1>Al Beruniy International School</h1>
+</div>
+
+<div class="main">
+  <div class="hero-text">
+    <h2>Knowledge is the <span>foundation of the future</span></h2>
+    <p>Teachers create tests, students submit them anytime. Results are delivered to the teacher's dashboard.</p>
   </div>
-  <div class="topbar-right">
-    <span style="color:rgba(255,255,255,.5);font-size:.78rem">🟢 Online</span>
-  </div>
-</header>
 
-<div class="hero-wrap">
-  <div class="hero-inner">
-    <div class="hero-badge">
-      🏫 Al Beruniy International School
+  <div class="cards">
+    <div class="card">
+      <div class="card-top">
+        <h3>Student</h3>
+        <p>Take tests and track your progress.</p>
+      </div>
+      <a href="student.html" class="btn-continue">Continue</a>
     </div>
 
-    <h1>
-      Knowledge is the<br/>
-      <span>foundation of the future</span>
-    </h1>
-    <p>
-      Teachers create tests, students submit them anytime.<br/>
-      Results are instantly delivered to the teacher's dashboard.
-    </p>
-
-    <div class="role-grid">
-      <a href="student.html" class="role-card">
-        <span class="rc-emoji">🎓</span>
-        <h2>Student</h2>
-        <p>Take tests and track your progress</p>
-        <span class="rc-arrow">→</span>
-      </a>
-      <a href="teacher.html" class="role-card">
-        <span class="rc-emoji">👨‍🏫</span>
-        <h2>Teacher</h2>
-        <p>Create tests and evaluate students</p>
-        <span class="rc-arrow">→</span>
-      </a>
+    <div class="card">
+      <div class="card-top">
+        <h3>Teacher</h3>
+        <p>Create tests and evaluate students.</p>
+      </div>
+      <a href="teacher.html" class="btn-continue">Continue</a>
     </div>
-
-
   </div>
 </div>
 
-<footer class="footer">
-  © 2024 <span>Al Beruniy International School</span> — All rights reserved
-</footer>
+<div class="footer">© 2024 <span>Al Beruniy International School</span></div>
 
-<script>
-  fetch('/api/teachers/count').then(()=>{}).catch(()=>{})
-  // Stats from API
-  Promise.all([
-    fetch('/api/tests').then(r=>r.json()).catch(()=>[]),
-    fetch('/api/results/count').then(r=>r.json()).catch(()=>({count:0}))
-  ]).then(([tests])=>{
-    document.getElementById('stat-tests').textContent=Array.isArray(tests)?tests.length:0
-  })
-</script>
 </body>
 </html>
