@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Al Beruniy International School</title>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    .hero-stats{display:flex;justify-content:center;gap:40px;margin-top:48px;flex-wrap:wrap}
+    .hero-stat{text-align:center}
+    .hero-stat .hs-val{font-size:1.8rem;font-weight:900;color:var(--navy)}
+    .hero-stat .hs-lbl{font-size:.75rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
+    .divider-line{width:1px;background:var(--border);align-self:stretch;margin:4px 0}
+    .features{max-width:700px;margin:56px auto 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px}
+    .feature-box{background:var(--card);border:2px solid var(--border);border-radius:16px;padding:20px 18px;text-align:center;box-shadow:var(--shadow)}
+    .feature-box .fb-icon{font-size:1.8rem;margin-bottom:10px;display:block}
+    .feature-box h3{font-size:.9rem;font-weight:800;color:var(--text);margin-bottom:4px}
+    .feature-box p{font-size:.78rem;color:var(--muted);line-height:1.5}
+  </style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-brand">
+    <div class="topbar-logo">AB</div>
+    <div class="topbar-title">
+      <span>Al Beruniy International School</span>
+      <span>Online Ta'lim Platformasi</span>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <span style="color:rgba(255,255,255,.5);font-size:.78rem">🟢 Online</span>
+  </div>
+</header>
+
+<div class="hero-wrap">
+  <div class="hero-inner">
+    <div class="hero-badge">
+      🏫 Al Beruniy International School
+    </div>
+
+    <h1>
+      Bilim — kelajak<br/>
+      <span>poydevori</span>
+    </h1>
+    <p>
+      O'qituvchilar test yaratadi, o'quvchilar istalgan vaqtda topshiradi.<br/>
+      Natijalar real vaqtda ustoz kabinetiga tushadi.
+    </p>
+
+    <div class="role-grid">
+      <a href="student.html" class="role-card">
+        <span class="rc-emoji">🎓</span>
+        <h2>O'quvchi</h2>
+        <p>Test topshirish va natijalarni kuzatish</p>
+        <span class="rc-arrow">→</span>
+      </a>
+      <a href="teacher.html" class="role-card">
+        <span class="rc-emoji">👨‍🏫</span>
+        <h2>O'qituvchi</h2>
+        <p>Test yaratish va o'quvchilarni baholash</p>
+        <span class="rc-arrow">→</span>
+      </a>
+    </div>
+
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hs-val" id="stat-teachers">—</div>
+        <div class="hs-lbl">O'qituvchi</div>
+      </div>
+      <div class="divider-line"></div>
+      <div class="hero-stat">
+        <div class="hs-val" id="stat-tests">—</div>
+        <div class="hs-lbl">Test</div>
+      </div>
+      <div class="divider-line"></div>
+      <div class="hero-stat">
+        <div class="hs-val" id="stat-results">—</div>
+        <div class="hs-lbl">Topshirilgan</div>
+      </div>
+    </div>
+
+    <div class="features">
+      <div class="feature-box">
+        <span class="fb-icon">📝</span>
+        <h3>Test & Ochiq savollar</h3>
+        <p>Test va erkin javobli savollarni birgalikda yarating</p>
+      </div>
+      <div class="feature-box">
+        <span class="fb-icon">📊</span>
+        <h3>Real-time natijalar</h3>
+        <p>O'quvchi topshirgan zahoti ustoz kabinetiga tushadi</p>
+      </div>
+      <div class="feature-box">
+        <span class="fb-icon">🔒</span>
+        <h3>Qayta topshirish blok</h3>
+        <p>Har bir o'quvchi testni faqat bir marta topshira oladi</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  © 2024 <span>Al Beruniy International School</span> — Barcha huquqlar himoyalangan
+</footer>
+
+<script>
+  const t = JSON.parse(localStorage.getItem('mp_teachers')||'[]')
+  const ts= JSON.parse(localStorage.getItem('mp_tests')||'[]')
+  const r = JSON.parse(localStorage.getItem('mp_results')||'[]')
+  document.getElementById('stat-teachers').textContent = t.length
+  document.getElementById('stat-tests').textContent    = ts.length
+  document.getElementById('stat-results').textContent  = r.length
+</script>
+</body>
+</html>

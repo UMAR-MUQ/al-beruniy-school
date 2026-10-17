@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>O'qituvchi — Al Beruniy International School</title>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    .test-card{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:12px;border:2px solid var(--border);background:#fff;margin-bottom:10px;transition:all .2s}
+    .test-card:hover{border-color:#c7d7ff;box-shadow:var(--shadow)}
+    .test-card-icon{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#eff6ff,#dbeafe);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+    .test-card-body{flex:1;min-width:0}
+    .test-card-body h4{font-size:.93rem;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .test-card-body p{font-size:.78rem;color:var(--muted);margin-top:2px}
+    .test-card-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+    .student-card{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:12px;border:2px solid var(--border);background:#fff;margin-bottom:10px;cursor:pointer;transition:all .2s}
+    .student-card:hover{border-color:var(--blue);box-shadow:var(--shadow);transform:translateX(3px)}
+    .student-avatar{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--navy),#1e3a8a);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:800;flex-shrink:0}
+    .student-card-body{flex:1;min-width:0}
+    .student-card-body h4{font-size:.93rem;font-weight:700;color:var(--text)}
+    .student-card-body p{font-size:.78rem;color:var(--muted);margin-top:2px}
+    .result-row-item{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-radius:10px;background:#f8fafc;border:1px solid var(--border);margin-bottom:8px;cursor:pointer;transition:all .2s;gap:10px;flex-wrap:wrap}
+    .result-row-item:hover{border-color:var(--blue);background:#eff6ff}
+    .result-row-item .ri-name{font-weight:700;font-size:.9rem}
+    .result-row-item .ri-meta{font-size:.78rem;color:var(--muted);margin-top:2px}
+    .result-row-item .ri-score{text-align:right;flex-shrink:0}
+    .result-row-item .ri-score .big{font-size:1.1rem;font-weight:900;color:var(--navy)}
+    .q-block-add{background:#f8fafc;border:2px solid var(--border);border-radius:14px;padding:20px;margin-bottom:14px;transition:border-color .2s}
+    .q-block-add:focus-within{border-color:#93c5fd}
+    .q-block-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+    .q-label-tag{font-size:.72rem;font-weight:800;color:var(--blue);text-transform:uppercase;letter-spacing:.5px;background:#eff6ff;padding:4px 10px;border-radius:6px}
+    .q-type-wrap{display:flex;gap:6px}
+    .qtype-btn{padding:5px 12px;border-radius:7px;border:2px solid var(--border);background:#fff;font-size:.75rem;font-weight:700;cursor:pointer;color:var(--muted);transition:all .2s;font-family:inherit}
+    .qtype-btn.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+    .opts-wrap{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}
+    .opt-r{display:flex;align-items:center;gap:8px}
+    .opt-r .ok{min-width:28px;height:28px;border-radius:7px;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.73rem;font-weight:800;flex-shrink:0}
+    .opt-r input[type=text]{flex:1}
+    .cor-row{display:flex;gap:10px;align-items:center;margin-top:8px;flex-wrap:wrap}
+    .cor-row>label{font-size:.72rem;font-weight:700;color:var(--muted);text-transform:uppercase}
+    .cor-row select{width:auto;padding:7px 12px;font-size:.85rem}
+    /* modal */
+    .modal-overlay{position:fixed;inset:0;background:rgba(10,22,40,.55);backdrop-filter:blur(4px);z-index:999;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .25s}
+    .modal-overlay.open{opacity:1;pointer-events:all}
+    .modal{background:#fff;border-radius:22px;max-width:640px;width:100%;max-height:88vh;overflow-y:auto;box-shadow:var(--shadow-lg);transform:translateY(20px);transition:transform .3s}
+    .modal-overlay.open .modal{transform:translateY(0)}
+    .modal-head{display:flex;justify-content:space-between;align-items:flex-start;padding:22px 26px 16px;border-bottom:2px solid var(--border);position:sticky;top:0;background:#fff;border-radius:22px 22px 0 0;z-index:1}
+    .modal-head-info h3{font-size:1rem;font-weight:800}
+    .modal-head-info p{font-size:.8rem;color:var(--muted);margin-top:3px}
+    .modal-close{width:34px;height:34px;border-radius:9px;border:none;background:#f1f5f9;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .2s}
+    .modal-close:hover{background:#fee2e2;color:var(--red)}
+    .modal-body{padding:20px 26px 26px}
+    .answer-item{border-radius:11px;padding:13px 15px;margin-bottom:10px;border-left:4px solid}
+    .answer-item.ok{background:#f0fdf4;border-color:var(--green)}
+    .answer-item.fail{background:#fff5f5;border-color:var(--red)}
+    .answer-item.open{background:#f0f9ff;border-color:var(--blue)}
+    .answer-item .ai-q{font-weight:700;font-size:.88rem;margin-bottom:7px;color:var(--text)}
+    .answer-item .ai-a{font-size:.82rem;color:var(--muted)}
+    .answer-item .ai-a b{color:var(--text)}
+  </style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-brand">
+    <div class="topbar-logo">AB</div>
+    <div class="topbar-title">
+      <span>Al Beruniy International School</span>
+      <span>O'qituvchi kabineti</span>
+    </div>
+  </div>
+  <div class="topbar-right" id="topbar-right">
+    <a href="index.html">← Bosh sahifa</a>
+  </div>
+</header>
+
+<!-- ============================================================  AUTH  -->
+<div id="auth-screen">
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <div class="auth-head">
+        <div class="auth-icon">👨‍🏫</div>
+        <h2>O'qituvchi kabineti</h2>
+        <p>Tizimga kirish yoki ro'yxatdan o'tish</p>
+      </div>
+
+      <div class="tabs">
+        <button class="tab-btn active" onclick="authTab('login',this)">🔑 Kirish</button>
+        <button class="tab-btn"        onclick="authTab('reg',this)">📝 Ro'yxat</button>
+      </div>
+
+      <!-- LOGIN -->
+      <div id="tp-login" class="tab-panel active">
+        <div id="login-alert"></div>
+        <div class="form-group"><label>Ism</label>
+          <input type="text" id="l-ism" placeholder="Ismingiz"/></div>
+        <div class="form-group"><label>Familiya</label>
+          <input type="text" id="l-fam" placeholder="Familiyangiz"/></div>
+        <div class="form-group"><label>Fan</label>
+          <select id="l-fan"><option value="">— Fanni tanlang —</option>
+            <option value="Matematika">Matematika</option>
+            <option value="Fizika">Fizika</option>
+            <option value="Kimyo">Kimyo</option>
+            <option value="Biologiya">Biologiya</option>
+            <option value="Ona tili va adabiyot">Ona tili va adabiyot</option>
+            <option value="Ingliz tili">Ingliz tili</option>
+            <option value="Rus tili">Rus tili</option>
+            <option value="Tarix">Tarix</option>
+            <option value="Geografiya">Geografiya</option>
+            <option value="Informatika">Informatika</option>
+            <option value="Jismoniy tarbiya">Jismoniy tarbiya</option>
+            <option value="Musiqa">Musiqa</option>
+            <option value="Tasviriy sanat">Tasviriy san'at</option>
+          </select></div>
+        <div class="form-group"><label>Parol</label>
+          <input type="password" id="l-par" placeholder="Parolingiz"
+            onkeydown="if(event.key==='Enter')doLogin()"/></div>
+        <button class="btn btn-primary btn-block" onclick="doLogin()">🔑 Kirish</button>
+      </div>
+
+      <!-- REGISTER -->
+      <div id="tp-reg" class="tab-panel">
+        <div id="reg-alert"></div>
+        <div class="form-group"><label>Ism</label>
+          <input type="text" id="r-ism" placeholder="Ismingiz"/></div>
+        <div class="form-group"><label>Familiya</label>
+          <input type="text" id="r-fam" placeholder="Familiyangiz"/></div>
+        <div class="form-group"><label>Fan</label>
+          <select id="r-fan"><option value="">— Fanni tanlang —</option>
+            <option value="Matematika">Matematika</option>
+            <option value="Fizika">Fizika</option>
+            <option value="Kimyo">Kimyo</option>
+            <option value="Biologiya">Biologiya</option>
+            <option value="Ona tili va adabiyot">Ona tili va adabiyot</option>
+            <option value="Ingliz tili">Ingliz tili</option>
+            <option value="Rus tili">Rus tili</option>
+            <option value="Tarix">Tarix</option>
+            <option value="Geografiya">Geografiya</option>
+            <option value="Informatika">Informatika</option>
+            <option value="Jismoniy tarbiya">Jismoniy tarbiya</option>
+            <option value="Musiqa">Musiqa</option>
+            <option value="Tasviriy sanat">Tasviriy san'at</option>
+          </select></div>
+        <div class="form-group"><label>Parol</label>
+          <input type="password" id="r-par" placeholder="Kamida 4 ta belgi"/></div>
+        <div class="form-group"><label>Parolni tasdiqlang</label>
+          <input type="password" id="r-par2" placeholder="Qaytaring"/></div>
+        <button class="btn btn-gold btn-block" onclick="doRegister()">✅ Ro'yxatdan o'tish</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================  DASHBOARD  -->
+<div id="dashboard" style="display:none">
+  <div class="page-wrap">
+
+    <!-- Welcome banner -->
+    <div class="welcome-banner">
+      <div class="wb-avatar">👨‍🏫</div>
+      <div class="wb-info">
+        <h2 id="wb-name">—</h2>
+        <p id="wb-fan">—</p>
+      </div>
+      <div class="wb-badge" id="wb-badge">📚 Fan</div>
+      <button class="btn btn-ghost btn-sm" style="margin-left:auto"
+        onclick="logout()">🚪 Chiqish</button>
+    </div>
+
+    <!-- Dashboard nav -->
+    <div class="dash-nav">
+      <button class="dash-nav-btn active" onclick="goPanel('p-tests',this)">📋 Testlarim</button>
+      <button class="dash-nav-btn"        onclick="goPanel('p-add',this)">➕ Test qo'shish</button>
+      <button class="dash-nav-btn"        onclick="goPanel('p-students',this)">👦 O'quvchilar</button>
+      <button class="dash-nav-btn"        onclick="goPanel('p-results',this)">📊 Natijalar</button>
+    </div>
+
+    <!-- ─── MY TESTS ─── -->
+    <div id="p-tests" class="dash-panel active">
+      <div class="card">
+        <div class="section-title">📋 Mening testlarim</div>
+        <div id="my-tests"></div>
+      </div>
+    </div>
+
+    <!-- ─── ADD TEST ─── -->
+    <div id="p-add" class="dash-panel">
+      <div class="card">
+        <div class="section-title">➕ Yangi test yaratish</div>
+        <div id="add-alert"></div>
+        <div class="form-group"><label>Test nomi</label>
+          <input type="text" id="t-nomi" placeholder="Masalan: 7-sinf Fizika – 1-chorak"/></div>
+        <div class="form-row">
+          <div class="form-group"><label>Sinf</label>
+            <select id="t-sinf">
+              <option value="">Sinf</option>
+              <option>1</option><option>2</option><option>3</option><option>4</option>
+              <option>5</option><option>6</option><option>7</option><option>8</option>
+              <option>9</option><option>10</option><option>11</option>
+            </select></div>
+          <div class="form-group"><label>Sinf harfi</label>
+            <select id="t-harf">
+              <option value="">Harf</option>
+              <option>A</option><option>B</option><option>C</option>
+              <option>D</option><option>E</option><option>Barcha</option>
+            </select></div>
+        </div>
+        <hr class="divider"/>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+          <div style="font-weight:800;color:var(--text);font-size:.95rem">📝 Savollar</div>
+          <button class="btn btn-outline btn-sm" onclick="addQ()">+ Savol qo'shish</button>
+        </div>
+        <div id="q-container"></div>
+        <button class="btn btn-primary btn-block" style="margin-top:8px" onclick="saveTest()">💾 Testni saqlash</button>
+      </div>
+    </div>
+
+    <!-- ─── STUDENTS ─── -->
+    <div id="p-students" class="dash-panel">
+      <div class="card">
+        <div class="section-title">👦 Test topshirgan o'quvchilar</div>
+        <div id="students-list"></div>
+      </div>
+    </div>
+
+    <!-- ─── RESULTS ─── -->
+    <div id="p-results" class="dash-panel">
+      <div class="card">
+        <div class="section-title">📊 Batafsil natijalar</div>
+        <div style="margin-bottom:16px">
+          <select id="filter-test" style="max-width:340px" onchange="renderResults()">
+            <option value="">— Barcha testlar —</option>
+          </select>
+        </div>
+        <div id="results-list"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================================================  MODAL  -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal" id="modal-box">
+    <div class="modal-head">
+      <div class="modal-head-info">
+        <h3 id="modal-title">—</h3>
+        <p  id="modal-sub">—</p>
+      </div>
+      <button class="modal-close" onclick="closeModalDirect()">✕</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<footer class="footer">
+  © 2024 <span>Al Beruniy International School</span>
+</footer>
+
+<script>
+/* ── STORAGE ── */
+const LS = {
+  teachers: ()=> JSON.parse(localStorage.getItem('mp_teachers')||'[]'),
+  setTeachers: d=> localStorage.setItem('mp_teachers', JSON.stringify(d)),
+  tests:    ()=> JSON.parse(localStorage.getItem('mp_tests')||'[]'),
+  setTests: d=> localStorage.setItem('mp_tests', JSON.stringify(d)),
+  results:  ()=> JSON.parse(localStorage.getItem('mp_results')||'[]'),
+  me:       ()=> { try{ return JSON.parse(localStorage.getItem('mp_me')||'null') }catch(e){ return null } },
+  setMe:    t=> t ? localStorage.setItem('mp_me',JSON.stringify(t)) : localStorage.removeItem('mp_me')
+}
+
+const $  = id => document.getElementById(id)
+const al = (id, msg, t='error') => $(id).innerHTML = `<div class="alert alert-${t}">${msg}</div>`
+const clr= id => $(id).innerHTML = ''
+
+/* ── AUTH TABS ── */
+function authTab(tab, btn){
+  ['login','reg'].forEach(t=>{
+    $('tp-'+t).classList.toggle('active', t===tab)
+  })
+  document.querySelectorAll('#auth-screen .tab-btn').forEach(b=>b.classList.remove('active'))
+  btn.classList.add('active')
+}
+
+/* ── REGISTER ── */
+function doRegister(){
+  clr('reg-alert')
+  const ism=  $('r-ism').value.trim()
+  const fam=  $('r-fam').value.trim()
+  const fan=  $('r-fan').value
+  const par=  $('r-par').value
+  const par2= $('r-par2').value
+
+  if(!ism||!fam||!fan||!par||!par2) return al('reg-alert','⚠️ Barcha maydonlarni to\'ldiring')
+  if(par.length<4)  return al('reg-alert','⚠️ Parol kamida 4 ta belgi')
+  if(par!==par2)    return al('reg-alert','⚠️ Parollar mos emas')
+
+  const list= LS.teachers()
+  if(list.find(t=> t.ism.toLowerCase()===ism.toLowerCase() && t.familiya.toLowerCase()===fam.toLowerCase() && t.fan===fan))
+    return al('reg-alert','⚠️ Bu o\'qituvchi allaqachon ro\'yxatdan o\'tgan')
+
+  const teacher={ id:'t_'+Date.now(), ism, familiya:fam, fan, parol:par }
+  list.push(teacher)
+  LS.setTeachers(list)
+  al('reg-alert','✅ Muvaffaqiyatli ro\'yxatdan o\'tdingiz! Endi kiring.','success')
+  $('l-ism').value= ism; $('l-fam').value= fam; $('l-fan').value= fan
+  authTab('login', document.querySelector('#auth-screen .tab-btn'))
+}
+
+/* ── LOGIN ── */
+function doLogin(){
+  clr('login-alert')
+  const ism= $('l-ism').value.trim()
+  const fam= $('l-fam').value.trim()
+  const fan= $('l-fan').value
+  const par= $('l-par').value
+
+  if(!ism||!fam||!fan||!par) return al('login-alert','⚠️ Barcha maydonlarni to\'ldiring')
+
+  const teacher= LS.teachers().find(t=>
+    t.ism.trim().toLowerCase()===ism.toLowerCase() &&
+    t.familiya.trim().toLowerCase()===fam.toLowerCase() &&
+    t.fan===fan && t.parol===par
+  )
+  if(!teacher){
+    const byName= LS.teachers().find(t=>
+      t.ism.trim().toLowerCase()===ism.toLowerCase() &&
+      t.familiya.trim().toLowerCase()===fam.toLowerCase()
+    )
+    if(byName && byName.fan!==fan) return al('login-alert','❌ Fan noto\'g\'ri')
+    if(byName) return al('login-alert','❌ Parol noto\'g\'ri')
+    return al('login-alert','❌ O\'qituvchi topilmadi. Avval ro\'yxatdan o\'ting.')
+  }
+  LS.setMe(teacher)
+  openDashboard(teacher)
+}
+
+function logout(){ LS.setMe(null); location.reload() }
+
+/* ── DASHBOARD ── */
+function openDashboard(t){
+  $('auth-screen').style.display='none'
+  $('dashboard').style.display='block'
+  $('wb-name').textContent= t.ism+' '+t.familiya
+  $('wb-fan').textContent = '📚 '+t.fan+' fani o\'qituvchisi'
+  $('wb-badge').textContent= t.fan
+  $('topbar-right').innerHTML=
+    `<span class="topbar-user">${t.ism} ${t.familiya}</span>
+     <a href="index.html">← Bosh sahifa</a>`
+  renderMyTests(t)
+}
+
+function goPanel(id, btn){
+  document.querySelectorAll('.dash-panel').forEach(p=>p.classList.remove('active'))
+  document.querySelectorAll('.dash-nav-btn').forEach(b=>b.classList.remove('active'))
+  $(id).classList.add('active')
+  btn.classList.add('active')
+  const t= LS.me()
+  if(!t) return
+  if(id==='p-tests')    renderMyTests(t)
+  if(id==='p-students') renderStudents(t)
+  if(id==='p-results')  { fillFilterTest(t); renderResults() }
+}
+
+/* ── MY TESTS ── */
+function renderMyTests(t){
+  const tests= LS.tests().filter(x=>x.teacherId===t.id)
+  const el= $('my-tests')
+  if(!tests.length){
+    el.innerHTML=`<div class="empty-state"><span class="es-icon">📭</span><p>Hozircha test yo'q. "Test qo'shish" bo'limiga o'ting.</p></div>`
+    return
+  }
+  el.innerHTML= tests.map(ts=>{
+    const cnt= LS.results().filter(r=>r.testId===ts.id).length
+    return `<div class="test-card">
+      <div class="test-card-icon">📋</div>
+      <div class="test-card-body">
+        <h4>${ts.nomi}</h4>
+        <p>${ts.sinf}-${ts.harf} sinf &nbsp;·&nbsp; ${ts.questions.length} savol &nbsp;·&nbsp; ${cnt} natija</p>
+      </div>
+      <div class="test-card-right">
+        <span class="badge badge-blue">${ts.sinf}-${ts.harf}</span>
+        <button class="btn btn-danger btn-sm" onclick="delTest('${ts.id}')">🗑</button>
+      </div>
+    </div>`
+  }).join('')
+}
+
+function delTest(id){
+  if(!confirm('Testni o\'chirasizmi?')) return
+  LS.setTests(LS.tests().filter(t=>t.id!==id))
+  renderMyTests(LS.me())
+}
+
+/* ── ADD TEST ── */
+let qc=0
+
+function addQ(){
+  qc++
+  const n=qc
+  const div=document.createElement('div')
+  div.className='q-block-add'
+  div.id='qb-'+n
+  div.innerHTML=`
+    <div class="q-block-head">
+      <span class="q-label-tag">Savol #${n}</span>
+      <div style="display:flex;gap:8px;align-items:center">
+        <div class="q-type-wrap">
+          <button class="qtype-btn on" id="qbt-test-${n}" onclick="switchQType(${n},'test')">Test</button>
+          <button class="qtype-btn"    id="qbt-open-${n}" onclick="switchQType(${n},'open')">Ochiq</button>
+        </div>
+        <button class="btn btn-danger btn-sm" onclick="rmQ(${n})">✕</button>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Savol matni</label>
+      <textarea id="qt-${n}" placeholder="Savol matnini yozing..."></textarea>
+    </div>
+    <div id="qopts-${n}">
+      <div class="opts-wrap">
+        <div class="opt-r"><span class="ok">A</span><input type="text" id="qa-${n}" placeholder="A javob"/></div>
+        <div class="opt-r"><span class="ok">B</span><input type="text" id="qb-${n}" placeholder="B javob"/></div>
+        <div class="opt-r"><span class="ok">C</span><input type="text" id="qc-${n}" placeholder="C javob"/></div>
+        <div class="opt-r"><span class="ok">D</span><input type="text" id="qd-${n}" placeholder="D javob"/></div>
+      </div>
+      <div class="cor-row">
+        <label>✅ To'g'ri javob:</label>
+        <select id="qcor-${n}">
+          <option value="a">A</option><option value="b">B</option>
+          <option value="c">C</option><option value="d">D</option>
+        </select>
+      </div>
+    </div>`
+  $('q-container').appendChild(div)
+}
+
+function switchQType(n, type){
+  $('qbt-test-'+n).classList.toggle('on', type==='test')
+  $('qbt-open-'+n).classList.toggle('on', type==='open')
+  const opts= $('qopts-'+n)
+  if(type==='open'){
+    opts.innerHTML=`<div class="form-group"><label>O'quvchi erkin javob yozadi (siz tekshirasiz)</label></div>`
+  } else {
+    opts.innerHTML=`
+      <div class="opts-wrap">
+        <div class="opt-r"><span class="ok">A</span><input type="text" id="qa-${n}" placeholder="A javob"/></div>
+        <div class="opt-r"><span class="ok">B</span><input type="text" id="qb-${n}" placeholder="B javob"/></div>
+        <div class="opt-r"><span class="ok">C</span><input type="text" id="qc-${n}" placeholder="C javob"/></div>
+        <div class="opt-r"><span class="ok">D</span><input type="text" id="qd-${n}" placeholder="D javob"/></div>
+      </div>
+      <div class="cor-row">
+        <label>✅ To'g'ri javob:</label>
+        <select id="qcor-${n}">
+          <option value="a">A</option><option value="b">B</option>
+          <option value="c">C</option><option value="d">D</option>
+        </select>
+      </div>`
+  }
+}
+
+function rmQ(n){ const e=$('qb-'+n); if(e) e.remove() }
+
+function saveTest(){
+  clr('add-alert')
+  const teacher= LS.me(); if(!teacher) return
+  const nomi= $('t-nomi').value.trim()
+  const sinf= $('t-sinf').value
+  const harf= $('t-harf').value
+  if(!nomi||!sinf||!harf) return al('add-alert','⚠️ Test nomi, sinf va harfni kiriting')
+
+  const rows= document.querySelectorAll('#q-container .q-block-add')
+  if(!rows.length) return al('add-alert','⚠️ Kamida 1 ta savol qo\'shing')
+
+  const questions=[]; let valid=true
+  rows.forEach(row=>{
+    const n= row.id.replace('qb-','')
+    const isOpen= $('qbt-open-'+n)?.classList.contains('on')
+    const text= $('qt-'+n)?.value.trim()
+    if(!text){ valid=false; return }
+    if(isOpen){
+      questions.push({ type:'open', text })
+    } else {
+      const a=$('qa-'+n)?.value.trim(), b=$('qb-'+n)?.value.trim()
+      const c=$('qc-'+n)?.value.trim(), d=$('qd-'+n)?.value.trim()
+      const cor=$('qcor-'+n)?.value
+      if(!a||!b||!c||!d){ valid=false; return }
+      questions.push({ type:'test', text, options:{a,b,c,d}, correct:cor })
+    }
+  })
+  if(!valid) return al('add-alert','⚠️ Barcha savol va variantlarni to\'ldiring')
+
+  const tests= LS.tests()
+  tests.push({ id:'ts_'+Date.now(), teacherId:teacher.id, teacherName:teacher.ism+' '+teacher.familiya,
+    fan:teacher.fan, nomi, sinf, harf, questions, createdAt:new Date().toLocaleString('uz') })
+  LS.setTests(tests)
+  $('t-nomi').value=''; $('t-sinf').value=''; $('t-harf').value=''
+  $('q-container').innerHTML=''; qc=0
+  al('add-alert','✅ Test saqlandi!','success')
+  renderMyTests(teacher)
+}
+
+/* ── STUDENTS ── */
+function renderStudents(teacher){
+  const myIds= LS.tests().filter(t=>t.teacherId===teacher.id).map(t=>t.id)
+  const res=   LS.results().filter(r=>myIds.includes(r.testId))
+  const el=    $('students-list')
+  if(!res.length){
+    el.innerHTML=`<div class="empty-state"><span class="es-icon">👥</span><p>Hozircha o'quvchi test topshirmagan.</p></div>`
+    return
+  }
+  // unique students
+  const seen=new Set(); const uniq=[]
+  res.forEach(r=>{ const k=r.studentName+'|'+r.sinf+'|'+r.harf
+    if(!seen.has(k)){ seen.add(k); uniq.push(r) } })
+
+  el.innerHTML= uniq.map(r=>{
+    const cnt= res.filter(x=>x.studentName===r.studentName&&x.sinf===r.sinf&&x.harf===r.harf).length
+    const initials= r.studentName.split(' ').map(w=>w[0]||'').join('').slice(0,2).toUpperCase()
+    return `<div class="student-card" onclick="showStudentDetail('${encodeURIComponent(r.studentName)}','${r.sinf}','${r.harf}')">
+      <div class="student-avatar">${initials}</div>
+      <div class="student-card-body">
+        <h4>${r.studentName}</h4>
+        <p>${r.sinf}-${r.harf} sinf &nbsp;·&nbsp; ${cnt} ta test topshirgan</p>
+      </div>
+      <div style="flex-shrink:0;display:flex;align-items:center;gap:8px">
+        <span class="badge badge-navy">${cnt} test</span>
+        <span style="color:var(--blue);font-size:.85rem;font-weight:700">Ko'rish →</span>
+      </div>
+    </div>`
+  }).join('')
+}
+
+/* ── STUDENT DETAIL MODAL ── */
+function showStudentDetail(encodedName, sinf, harf){
+  const name= decodeURIComponent(encodedName)
+  const teacher= LS.me(); if(!teacher) return
+  const myIds= LS.tests().filter(t=>t.teacherId===teacher.id).map(t=>t.id)
+  const allRes= LS.results().filter(r=>
+    myIds.includes(r.testId) &&
+    r.studentName===name && r.sinf===sinf && r.harf===harf
+  )
+
+  $('modal-title').textContent= name
+  $('modal-sub').textContent  = sinf+'-'+harf+' sinf · '+allRes.length+' ta test topshirgan'
+
+  let html=''
+  allRes.forEach(res=>{
+    const pct= res.total>0 ? Math.round((res.score/res.total)*100) : 0
+    const btype= pct>=80?'green':pct>=50?'gold':'red'
+    html+=`<div style="margin-bottom:20px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px">
+        <div>
+          <div style="font-weight:800;font-size:.95rem">📋 ${res.testNomi}</div>
+          <div style="font-size:.78rem;color:var(--muted);margin-top:2px">🕐 ${res.dateStr}</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:1.1rem;font-weight:900;color:var(--navy)">${res.score}/${res.total}</div>
+          <span class="badge badge-${btype}">${pct}% · ${res.grade||''}</span>
+        </div>
+      </div>`
+
+    if(res.answers && res.answers.length){
+      res.answers.forEach((ans,i)=>{
+        if(ans.type==='open'){
+          html+=`<div class="answer-item open">
+            <div class="ai-q">${i+1}. ${ans.question}</div>
+            <div class="ai-a">✏️ Javob: <b>${ans.given||'(yozilmagan)'}</b></div>
+          </div>`
+        } else {
+          const isOk= ans.given===ans.correct
+          html+=`<div class="answer-item ${isOk?'ok':'fail'}">
+            <div class="ai-q">${i+1}. ${ans.question}</div>
+            <div class="ai-a">
+              ${isOk
+                ? `✅ To'g'ri: <b>${ans.correct?.toUpperCase()}) ${ans.correctText||''}</b>`
+                : `❌ Berilgan: <b>${ans.given?ans.given.toUpperCase()+') '+(ans.givenText||''):'(javob yo\'q)'}</b>
+                   &nbsp;·&nbsp; ✅ To'g'ri: <b>${ans.correct?.toUpperCase()}) ${ans.correctText||''}</b>`
+              }
+            </div>
+          </div>`
+        }
+      })
+    } else {
+      html+=`<div class="alert alert-info" style="font-size:.82rem">Batafsil javob ma'lumoti mavjud emas.</div>`
+    }
+    html+='</div><hr class="divider"/>'
+  })
+
+  $('modal-body').innerHTML= html || '<div class="empty-state"><p>Natija yo\'q.</p></div>'
+  $('modal-overlay').classList.add('open')
+}
+
+function closeModal(e){ if(e.target===$('modal-overlay')) closeModalDirect() }
+function closeModalDirect(){ $('modal-overlay').classList.remove('open') }
+
+/* ── RESULTS ── */
+function fillFilterTest(teacher){
+  const tests= LS.tests().filter(t=>t.teacherId===teacher.id)
+  const sel= $('filter-test')
+  sel.innerHTML='<option value="">— Barcha testlar —</option>'
+  tests.forEach(t=>{ const o=document.createElement('option'); o.value=t.id; o.textContent=t.nomi; sel.appendChild(o) })
+}
+
+function renderResults(){
+  const teacher= LS.me(); if(!teacher) return
+  const fid= $('filter-test')?.value||''
+  const myIds= LS.tests().filter(t=>t.teacherId===teacher.id).map(t=>t.id)
+  let res= LS.results().filter(r=>myIds.includes(r.testId))
+  if(fid) res= res.filter(r=>r.testId===fid)
+  res= res.sort((a,b)=>b.time-a.time)
+  const el= $('results-list')
+  if(!res.length){
+    el.innerHTML=`<div class="empty-state"><span class="es-icon">📭</span><p>Hozircha natija yo'q.</p></div>`
+    return
+  }
+  el.innerHTML= res.map(r=>{
+    const pct= r.total>0 ? Math.round((r.score/r.total)*100) : 0
+    const bt= pct>=80?'green':pct>=50?'gold':'red'
+    return `<div class="result-row-item"
+      onclick="showStudentDetail('${encodeURIComponent(r.studentName)}','${r.sinf}','${r.harf}')">
+      <div>
+        <div class="ri-name">👦 ${r.studentName}</div>
+        <div class="ri-meta">${r.sinf}-${r.harf} sinf &nbsp;·&nbsp; 📋 ${r.testNomi} &nbsp;·&nbsp; 🕐 ${r.dateStr}</div>
+      </div>
+      <div class="ri-score">
+        <div class="big">${r.score}/${r.total}</div>
+        <span class="badge badge-${bt}">${pct}% · ${r.grade||''}</span>
+      </div>
+    </div>`
+  }).join('')
+}
+
+/* ── INIT ── */
+;(function(){
+  const me= LS.me()
+  if(me) openDashboard(me)
+  else   addQ()
+})()
+</script>
+</body>
+</html>
