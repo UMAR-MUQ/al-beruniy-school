@@ -4,68 +4,65 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Al Beruniy International School</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-    body{font-family:'Inter',sans-serif;background:#f0f2f5;min-height:100vh;display:flex;flex-direction:column}
-    a{text-decoration:none;color:inherit}
-
-    /* HEADER */
-    .header{background:#1e3a5f;padding:18px 24px;text-align:left}
-    .header h1{color:#fff;font-size:1.15rem;font-weight:700;letter-spacing:.2px}
-
-    /* MAIN */
-    .main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px}
-    .hero-text{text-align:center;margin-bottom:36px;max-width:520px}
-    .hero-text h2{font-size:clamp(1.5rem,4vw,2.1rem);font-weight:800;color:#1e3a5f;line-height:1.25;margin-bottom:12px}
-    .hero-text h2 span{color:#2563eb}
-    .hero-text p{font-size:.95rem;color:#64748b;line-height:1.65}
-
-    /* CARDS */
-    .cards{display:flex;flex-direction:column;gap:14px;width:100%;max-width:480px}
-    .card{background:#fff;border-radius:12px;padding:22px 24px;border:1px solid #e2e8f0;box-shadow:0 1px 6px rgba(0,0,0,.06)}
-    .card-top{margin-bottom:16px}
-    .card h3{font-size:1.05rem;font-weight:700;color:#1e3a5f;margin-bottom:5px}
-    .card p{font-size:.87rem;color:#64748b;line-height:1.5}
-    .btn-continue{display:block;width:100%;padding:12px;background:#1e3a5f;color:#fff;border:none;border-radius:8px;font-size:.93rem;font-weight:600;cursor:pointer;text-align:center;transition:background .18s;font-family:inherit}
-    .btn-continue:hover{background:#162d4a}
-
-    /* FOOTER */
-    .footer{background:#1e3a5f;color:rgba(255,255,255,.6);text-align:center;padding:14px 20px;font-size:.78rem}
-    .footer span{color:rgba(255,255,255,.85)}
-  </style>
+  <link rel="stylesheet" href="style.css?v=3"/>
 </head>
 <body>
 
-<div class="header">
-  <h1>Al Beruniy International School</h1>
-</div>
-
-<div class="main">
-  <div class="hero-text">
-    <h2>Knowledge is the <span>foundation of the future</span></h2>
-  </div>
-
-  <div class="cards">
-    <div class="card">
-      <div class="card-top">
-        <h3>Student</h3>
-        <p>Take tests and track your progress.</p>
-      </div>
-      <a href="student.html" class="btn-continue">Continue</a>
-    </div>
-
-    <div class="card">
-      <div class="card-top">
-        <h3>Teacher</h3>
-        <p>Create tests and evaluate students.</p>
-      </div>
-      <a href="teacher.html" class="btn-continue">Continue</a>
+<!-- HEADER -->
+<header class="topbar">
+  <div class="topbar-brand">
+    <div class="topbar-logo">AB</div>
+    <div class="topbar-title">
+      <span>Al Beruniy International School</span>
     </div>
   </div>
-</div>
+</header>
 
-<div class="footer">© 2024 <span>Al Beruniy International School</span></div>
+<!-- HERO -->
+<main class="home-main">
+  <div class="home-inner">
+
+    <div class="home-badge">International School</div>
+
+    <h1 class="home-heading">
+      Knowledge is the<br>
+      <span class="home-accent">foundation of the future</span>
+    </h1>
+
+    <p class="home-desc">
+      Teachers create tests, students submit them anytime.<br>
+      Results reach the teacher's dashboard instantly.
+    </p>
+
+    <!-- ROLE CARDS -->
+    <div class="home-cards">
+
+      <a href="student.html" class="home-card">
+        <div class="home-card-letter home-card-s">S</div>
+        <div class="home-card-body">
+          <div class="home-card-title">Student</div>
+          <div class="home-card-desc">Take tests and track progress</div>
+        </div>
+        <div class="home-card-arrow">→</div>
+      </a>
+
+      <a href="teacher.html" class="home-card">
+        <div class="home-card-letter home-card-t">T</div>
+        <div class="home-card-body">
+          <div class="home-card-title">Teacher</div>
+          <div class="home-card-desc">Create tests and evaluate students</div>
+        </div>
+        <div class="home-card-arrow home-card-arrow-amber">→</div>
+      </a>
+
+    </div>
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  © 2024 <span>Al Beruniy International School</span>
+</footer>
 
 </body>
 </html>
