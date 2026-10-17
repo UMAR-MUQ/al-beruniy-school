@@ -25,11 +25,9 @@
     .result-row-item .ri-meta{font-size:.78rem;color:var(--muted);margin-top:2px}
     .result-row-item .ri-score{text-align:right;flex-shrink:0}
     .result-row-item .ri-score .big{font-size:1.1rem;font-weight:900;color:var(--navy)}
-    .q-block-add{background:#f8fafc;border:2px solid var(--border);border-radius:14px;padding:20px;margin-bottom:14px;transition:border-color .2s}
-    .q-block-add:focus-within{border-color:#93c5fd}
+    .q-block-add{background:#f8fafc;border:2px solid var(--border);border-radius:14px;padding:20px;margin-bottom:14px}
     .q-block-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
     .q-label-tag{font-size:.72rem;font-weight:800;color:var(--blue);text-transform:uppercase;letter-spacing:.5px;background:#eff6ff;padding:4px 10px;border-radius:6px}
-    .q-type-wrap{display:flex;gap:6px}
     .qtype-btn{padding:5px 12px;border-radius:7px;border:2px solid var(--border);background:#fff;font-size:.75rem;font-weight:700;cursor:pointer;color:var(--muted);transition:all .2s;font-family:inherit}
     .qtype-btn.on{background:var(--navy);color:#fff;border-color:var(--navy)}
     .opts-wrap{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}
@@ -46,7 +44,7 @@
     .modal-head{display:flex;justify-content:space-between;align-items:flex-start;padding:22px 26px 16px;border-bottom:2px solid var(--border);position:sticky;top:0;background:#fff;border-radius:22px 22px 0 0;z-index:1}
     .modal-head-info h3{font-size:1rem;font-weight:800}
     .modal-head-info p{font-size:.8rem;color:var(--muted);margin-top:3px}
-    .modal-close{width:34px;height:34px;border-radius:9px;border:none;background:#f1f5f9;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .2s}
+    .modal-close{width:34px;height:34px;border-radius:9px;border:none;background:#f1f5f9;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;flex-shrink:0}
     .modal-close:hover{background:#fee2e2;color:var(--red)}
     .modal-body{padding:20px 26px 26px}
     .answer-item{border-radius:11px;padding:13px 15px;margin-bottom:10px;border-left:4px solid}
@@ -56,6 +54,7 @@
     .answer-item .ai-q{font-weight:700;font-size:.88rem;margin-bottom:7px;color:var(--text)}
     .answer-item .ai-a{font-size:.82rem;color:var(--muted)}
     .answer-item .ai-a b{color:var(--text)}
+    .loading{text-align:center;padding:32px;color:var(--muted);font-size:.9rem}
   </style>
 </head>
 <body>
@@ -81,7 +80,6 @@
         <h2>Teacher Portal</h2>
         <p>Sign in or create an account</p>
       </div>
-
       <div class="tabs">
         <button class="tab-btn active" onclick="authTab('login',this)">🔑 Sign In</button>
         <button class="tab-btn"        onclick="authTab('reg',this)">📝 Register</button>
@@ -112,7 +110,7 @@
         <div class="form-group"><label>Password</label>
           <input type="password" id="l-par" placeholder="Your password"
             onkeydown="if(event.key==='Enter')doLogin()"/></div>
-        <button class="btn btn-primary btn-block" onclick="doLogin()">🔑 Sign In</button>
+        <button class="btn btn-primary btn-block" id="btn-login" onclick="doLogin()">🔑 Sign In</button>
       </div>
 
       <!-- REGISTER -->
@@ -141,7 +139,7 @@
           <input type="password" id="r-par" placeholder="At least 4 characters"/></div>
         <div class="form-group"><label>Confirm Password</label>
           <input type="password" id="r-par2" placeholder="Repeat password"/></div>
-        <button class="btn btn-gold btn-block" onclick="doRegister()">✅ Create Account</button>
+        <button class="btn btn-gold btn-block" id="btn-reg" onclick="doRegister()">✅ Create Account</button>
       </div>
     </div>
   </div>
@@ -150,12 +148,11 @@
 <!-- DASHBOARD -->
 <div id="dashboard" style="display:none">
   <div class="page-wrap">
-
     <div class="welcome-banner">
       <div class="wb-avatar">👨‍🏫</div>
       <div class="wb-info">
         <h2 id="wb-name">—</h2>
-        <p id="wb-fan">—</p>
+        <p id="wb-sub">—</p>
       </div>
       <div class="wb-badge" id="wb-badge">Subject</div>
       <button class="btn btn-ghost btn-sm" style="margin-left:auto" onclick="logout()">🚪 Sign Out</button>
@@ -168,15 +165,13 @@
       <button class="dash-nav-btn"        onclick="goPanel('p-results',this)">📊 Results</button>
     </div>
 
-    <!-- MY TESTS -->
     <div id="p-tests" class="dash-panel active">
       <div class="card">
         <div class="section-title">📋 My Tests</div>
-        <div id="my-tests"></div>
+        <div id="my-tests"><div class="loading">Loading...</div></div>
       </div>
     </div>
 
-    <!-- ADD TEST -->
     <div id="p-add" class="dash-panel">
       <div class="card">
         <div class="section-title">➕ Create New Test</div>
@@ -204,37 +199,34 @@
           <button class="btn btn-outline btn-sm" onclick="addQ()">+ Add Question</button>
         </div>
         <div id="q-container"></div>
-        <button class="btn btn-primary btn-block" style="margin-top:8px" onclick="saveTest()">💾 Save Test</button>
+        <button class="btn btn-primary btn-block" style="margin-top:8px" id="btn-save" onclick="saveTest()">💾 Save Test</button>
       </div>
     </div>
 
-    <!-- STUDENTS -->
     <div id="p-students" class="dash-panel">
       <div class="card">
-        <div class="section-title">👦 Students Who Submitted Tests</div>
-        <div id="students-list"></div>
+        <div class="section-title">👦 Students</div>
+        <div id="students-list"><div class="loading">Loading...</div></div>
       </div>
     </div>
 
-    <!-- RESULTS -->
     <div id="p-results" class="dash-panel">
       <div class="card">
-        <div class="section-title">📊 Detailed Results</div>
+        <div class="section-title">📊 Results</div>
         <div style="margin-bottom:16px">
           <select id="filter-test" style="max-width:340px" onchange="renderResults()">
             <option value="">— All Tests —</option>
           </select>
         </div>
-        <div id="results-list"></div>
+        <div id="results-list"><div class="loading">Loading...</div></div>
       </div>
     </div>
-
   </div>
 </div>
 
 <!-- MODAL -->
 <div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
-  <div class="modal" id="modal-box">
+  <div class="modal">
     <div class="modal-head">
       <div class="modal-head-info">
         <h3 id="modal-title">—</h3>
@@ -246,122 +238,131 @@
   </div>
 </div>
 
-<footer class="footer">
-  © 2024 <span>Al Beruniy International School</span>
-</footer>
+<footer class="footer">© 2024 <span>Al Beruniy International School</span></footer>
 
 <script>
-const LS = {
-  teachers: ()=> JSON.parse(localStorage.getItem('mp_teachers')||'[]'),
-  setTeachers: d=> localStorage.setItem('mp_teachers', JSON.stringify(d)),
-  tests:    ()=> JSON.parse(localStorage.getItem('mp_tests')||'[]'),
-  setTests: d=> localStorage.setItem('mp_tests', JSON.stringify(d)),
-  results:  ()=> JSON.parse(localStorage.getItem('mp_results')||'[]'),
-  me:       ()=> { try{ return JSON.parse(localStorage.getItem('mp_me')||'null') }catch(e){ return null } },
-  setMe:    t=> t ? localStorage.setItem('mp_me',JSON.stringify(t)) : localStorage.removeItem('mp_me')
+/* ── API ── */
+const API = {
+  post: async (url, body) => {
+    const r = await fetch(url, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) })
+    return r.json()
+  },
+  get:  async (url) => { const r = await fetch(url); return r.json() },
+  del:  async (url) => { const r = await fetch(url, { method:'DELETE' }); return r.json() }
 }
 
-const $  = id => document.getElementById(id)
-const al = (id, msg, t='error') => $(id).innerHTML = `<div class="alert alert-${t}">${msg}</div>`
-const clr= id => $(id).innerHTML = ''
+/* ── SESSION ── */
+let ME = null
+function saveMe(t){ ME=t; localStorage.setItem('mp_me', JSON.stringify(t)) }
+function loadMe(){ try{ return JSON.parse(localStorage.getItem('mp_me')||'null') }catch(e){ return null } }
+function logout(){ localStorage.removeItem('mp_me'); location.reload() }
 
-function authTab(tab, btn){
-  ['login','reg'].forEach(t=> $('tp-'+t).classList.toggle('active', t===tab))
+/* ── HELPERS ── */
+const $ = id => document.getElementById(id)
+const al = (id,msg,t='error') => $(id).innerHTML=`<div class="alert alert-${t}">${msg}</div>`
+const clr= id => $(id).innerHTML=''
+const setLoading = (btnId, loading, txt='') => {
+  const b=$(btnId); if(!b) return
+  b.disabled=loading; b.style.opacity=loading?'.6':'1'
+  if(txt) b.textContent=loading?'⏳ Please wait...':txt
+}
+
+function authTab(tab,btn){
+  ['login','reg'].forEach(t=> $('tp-'+t).classList.toggle('active',t===tab))
   document.querySelectorAll('#auth-screen .tab-btn').forEach(b=>b.classList.remove('active'))
   btn.classList.add('active')
 }
 
-function doRegister(){
+/* ── REGISTER ── */
+async function doRegister(){
   clr('reg-alert')
-  const ism= $('r-ism').value.trim(), fam= $('r-fam').value.trim()
-  const fan= $('r-fan').value, par= $('r-par').value, par2= $('r-par2').value
+  const ism=$('r-ism').value.trim(), fam=$('r-fam').value.trim()
+  const fan=$('r-fan').value, par=$('r-par').value, par2=$('r-par2').value
   if(!ism||!fam||!fan||!par||!par2) return al('reg-alert','⚠️ Please fill in all fields')
-  if(par.length<4)  return al('reg-alert','⚠️ Password must be at least 4 characters')
-  if(par!==par2)    return al('reg-alert','⚠️ Passwords do not match')
-  const list= LS.teachers()
-  if(list.find(t=> t.ism.toLowerCase()===ism.toLowerCase() && t.familiya.toLowerCase()===fam.toLowerCase() && t.fan===fan))
-    return al('reg-alert','⚠️ This teacher is already registered')
-  const teacher={ id:'t_'+Date.now(), ism, familiya:fam, fan, parol:par }
-  list.push(teacher); LS.setTeachers(list)
+  if(par.length<4) return al('reg-alert','⚠️ Password must be at least 4 characters')
+  if(par!==par2)   return al('reg-alert','⚠️ Passwords do not match')
+
+  setLoading('btn-reg', true, '✅ Create Account')
+  const res = await API.post('/api/teachers/register', { ism, familiya:fam, fan, parol:par })
+  setLoading('btn-reg', false, '✅ Create Account')
+
+  if(res.error) return al('reg-alert','⚠️ '+res.error)
   al('reg-alert','✅ Registered successfully! Please sign in.','success')
   $('l-ism').value=ism; $('l-fam').value=fam; $('l-fan').value=fan
   authTab('login', document.querySelector('#auth-screen .tab-btn'))
 }
 
-function doLogin(){
+/* ── LOGIN ── */
+async function doLogin(){
   clr('login-alert')
-  const ism= $('l-ism').value.trim(), fam= $('l-fam').value.trim()
-  const fan= $('l-fan').value, par= $('l-par').value
+  const ism=$('l-ism').value.trim(), fam=$('l-fam').value.trim()
+  const fan=$('l-fan').value, par=$('l-par').value
   if(!ism||!fam||!fan||!par) return al('login-alert','⚠️ Please fill in all fields')
-  const teacher= LS.teachers().find(t=>
-    t.ism.trim().toLowerCase()===ism.toLowerCase() &&
-    t.familiya.trim().toLowerCase()===fam.toLowerCase() &&
-    t.fan===fan && t.parol===par
-  )
-  if(!teacher){
-    const byName= LS.teachers().find(t=>
-      t.ism.trim().toLowerCase()===ism.toLowerCase() &&
-      t.familiya.trim().toLowerCase()===fam.toLowerCase()
-    )
-    if(byName && byName.fan!==fan) return al('login-alert','❌ Incorrect subject')
-    if(byName) return al('login-alert','❌ Incorrect password')
-    return al('login-alert','❌ Teacher not found. Please register first.')
-  }
-  LS.setMe(teacher); openDashboard(teacher)
+
+  setLoading('btn-login', true, '🔑 Sign In')
+  const res = await API.post('/api/teachers/login', { ism, familiya:fam, fan, parol:par })
+  setLoading('btn-login', false, '🔑 Sign In')
+
+  if(res.error) return al('login-alert','❌ '+res.error)
+  saveMe(res.teacher)
+  openDashboard(res.teacher)
 }
 
-function logout(){ LS.setMe(null); location.reload() }
-
+/* ── DASHBOARD ── */
 function openDashboard(t){
   $('auth-screen').style.display='none'
   $('dashboard').style.display='block'
-  $('wb-name').textContent= t.ism+' '+t.familiya
-  $('wb-fan').textContent = '📚 '+t.fan+' teacher'
-  $('wb-badge').textContent= t.fan
-  $('topbar-right').innerHTML=
-    `<span class="topbar-user">${t.ism} ${t.familiya}</span>
-     <a href="index.html">← Home</a>`
-  renderMyTests(t)
+  $('wb-name').textContent=t.ism+' '+t.familiya
+  $('wb-sub').textContent='📚 '+t.fan+' teacher'
+  $('wb-badge').textContent=t.fan
+  $('topbar-right').innerHTML=`<span class="topbar-user">${t.ism} ${t.familiya}</span><a href="index.html">← Home</a>`
+  loadMyTests(t)
 }
 
-function goPanel(id, btn){
+function goPanel(id,btn){
   document.querySelectorAll('.dash-panel').forEach(p=>p.classList.remove('active'))
   document.querySelectorAll('.dash-nav-btn').forEach(b=>b.classList.remove('active'))
   $(id).classList.add('active'); btn.classList.add('active')
-  const t= LS.me(); if(!t) return
-  if(id==='p-tests')    renderMyTests(t)
-  if(id==='p-students') renderStudents(t)
-  if(id==='p-results')  { fillFilterTest(t); renderResults() }
+  if(!ME) return
+  if(id==='p-tests')    loadMyTests(ME)
+  if(id==='p-students') loadStudents(ME)
+  if(id==='p-results')  { loadResults(ME) }
 }
 
-function renderMyTests(t){
-  const tests= LS.tests().filter(x=>x.teacherId===t.id)
-  const el= $('my-tests')
+/* ── MY TESTS ── */
+async function loadMyTests(t){
+  $('my-tests').innerHTML='<div class="loading">Loading...</div>'
+  const tests = await API.get('/api/tests/teacher/'+t.id)
+  renderMyTests(tests)
+}
+
+function renderMyTests(tests){
+  const el=$('my-tests')
   if(!tests.length){
-    el.innerHTML=`<div class="empty-state"><span class="es-icon">📭</span><p>No tests yet. Go to "Add Test" to create one.</p></div>`
+    el.innerHTML=`<div class="empty-state"><span class="es-icon">📭</span><p>No tests yet. Go to "Add Test".</p></div>`
     return
   }
-  el.innerHTML= tests.map(ts=>{
-    const cnt= LS.results().filter(r=>r.testId===ts.id).length
-    return `<div class="test-card">
+  el.innerHTML=tests.map(ts=>`
+    <div class="test-card">
       <div class="test-card-icon">📋</div>
       <div class="test-card-body">
         <h4>${ts.nomi}</h4>
-        <p>Grade ${ts.sinf}-${ts.harf} &nbsp;·&nbsp; ${ts.questions.length} questions &nbsp;·&nbsp; ${cnt} results</p>
+        <p>Grade ${ts.sinf}-${ts.harf} · ${ts.questions.length} questions</p>
       </div>
       <div class="test-card-right">
         <span class="badge badge-blue">${ts.sinf}-${ts.harf}</span>
         <button class="btn btn-danger btn-sm" onclick="delTest('${ts.id}')">🗑</button>
       </div>
-    </div>`
-  }).join('')
+    </div>`).join('')
 }
 
-function delTest(id){
+async function delTest(id){
   if(!confirm('Delete this test?')) return
-  LS.setTests(LS.tests().filter(t=>t.id!==id)); renderMyTests(LS.me())
+  await API.del('/api/tests/'+id)
+  loadMyTests(ME)
 }
 
+/* ── ADD TEST ── */
 let qc=0
 function addQ(){
   qc++; const n=qc
@@ -371,15 +372,14 @@ function addQ(){
     <div class="q-block-head">
       <span class="q-label-tag">Question #${n}</span>
       <div style="display:flex;gap:8px;align-items:center">
-        <div class="q-type-wrap">
+        <div style="display:flex;gap:6px">
           <button class="qtype-btn on" id="qbt-test-${n}" onclick="switchQType(${n},'test')">Multiple Choice</button>
           <button class="qtype-btn"    id="qbt-open-${n}" onclick="switchQType(${n},'open')">Open-ended</button>
         </div>
         <button class="btn btn-danger btn-sm" onclick="rmQ(${n})">✕</button>
       </div>
     </div>
-    <div class="form-group">
-      <label>Question Text</label>
+    <div class="form-group"><label>Question Text</label>
       <textarea id="qt-${n}" placeholder="Write the question here..."></textarea>
     </div>
     <div id="qopts-${n}">
@@ -400,15 +400,12 @@ function addQ(){
   $('q-container').appendChild(div)
 }
 
-function switchQType(n, type){
-  $('qbt-test-'+n).classList.toggle('on', type==='test')
-  $('qbt-open-'+n).classList.toggle('on', type==='open')
-  const opts= $('qopts-'+n)
-  if(type==='open'){
-    opts.innerHTML=`<div class="form-group"><label>Student writes a free-form answer (you review it manually)</label></div>`
-  } else {
-    opts.innerHTML=`
-      <div class="opts-wrap">
+function switchQType(n,type){
+  $('qbt-test-'+n).classList.toggle('on',type==='test')
+  $('qbt-open-'+n).classList.toggle('on',type==='open')
+  $('qopts-'+n).innerHTML = type==='open'
+    ? `<div class="form-group"><label>Student writes a free-form answer (you review manually)</label></div>`
+    : `<div class="opts-wrap">
         <div class="opt-r"><span class="ok">A</span><input type="text" id="qa-${n}" placeholder="Option A"/></div>
         <div class="opt-r"><span class="ok">B</span><input type="text" id="qb-${n}" placeholder="Option B"/></div>
         <div class="opt-r"><span class="ok">C</span><input type="text" id="qc-${n}" placeholder="Option C"/></div>
@@ -421,64 +418,67 @@ function switchQType(n, type){
           <option value="c">C</option><option value="d">D</option>
         </select>
       </div>`
-  }
 }
 
 function rmQ(n){ const e=$('qb-'+n); if(e) e.remove() }
 
-function saveTest(){
+async function saveTest(){
   clr('add-alert')
-  const teacher= LS.me(); if(!teacher) return
-  const nomi= $('t-nomi').value.trim(), sinf= $('t-sinf').value, harf= $('t-harf').value
-  if(!nomi||!sinf||!harf) return al('add-alert','⚠️ Please enter test name, grade and class')
-  const rows= document.querySelectorAll('#q-container .q-block-add')
+  const nomi=$('t-nomi').value.trim(), sinf=$('t-sinf').value, harf=$('t-harf').value
+  if(!nomi||!sinf||!harf) return al('add-alert','⚠️ Enter test name, grade and class')
+  const rows=document.querySelectorAll('#q-container .q-block-add')
   if(!rows.length) return al('add-alert','⚠️ Add at least 1 question')
   const questions=[]; let valid=true
   rows.forEach(row=>{
-    const n= row.id.replace('qb-','')
-    const isOpen= $('qbt-open-'+n)?.classList.contains('on')
-    const text= $('qt-'+n)?.value.trim()
+    const n=row.id.replace('qb-','')
+    const isOpen=$('qbt-open-'+n)?.classList.contains('on')
+    const text=$('qt-'+n)?.value.trim()
     if(!text){ valid=false; return }
-    if(isOpen){ questions.push({ type:'open', text }) }
+    if(isOpen){ questions.push({type:'open',text}) }
     else {
       const a=$('qa-'+n)?.value.trim(), b=$('qb-'+n)?.value.trim()
       const c=$('qc-'+n)?.value.trim(), d=$('qd-'+n)?.value.trim()
       const cor=$('qcor-'+n)?.value
       if(!a||!b||!c||!d){ valid=false; return }
-      questions.push({ type:'test', text, options:{a,b,c,d}, correct:cor })
+      questions.push({type:'test',text,options:{a,b,c,d},correct:cor})
     }
   })
-  if(!valid) return al('add-alert','⚠️ Please fill in all questions and options')
-  const tests= LS.tests()
-  tests.push({ id:'ts_'+Date.now(), teacherId:teacher.id,
-    teacherName:teacher.ism+' '+teacher.familiya, fan:teacher.fan,
-    nomi, sinf, harf, questions, createdAt:new Date().toLocaleString('en') })
-  LS.setTests(tests)
+  if(!valid) return al('add-alert','⚠️ Fill in all questions and options')
+
+  setLoading('btn-save', true, '💾 Save Test')
+  const res = await API.post('/api/tests', {
+    teacherId: ME.id, teacherName: ME.ism+' '+ME.familiya,
+    fan: ME.fan, nomi, sinf, harf, questions
+  })
+  setLoading('btn-save', false, '💾 Save Test')
+
+  if(res.error) return al('add-alert','❌ '+res.error)
   $('t-nomi').value=''; $('t-sinf').value=''; $('t-harf').value=''
   $('q-container').innerHTML=''; qc=0
   al('add-alert','✅ Test saved successfully!','success')
-  renderMyTests(teacher)
+  loadMyTests(ME)
 }
 
-function renderStudents(teacher){
-  const myIds= LS.tests().filter(t=>t.teacherId===teacher.id).map(t=>t.id)
-  const res=   LS.results().filter(r=>myIds.includes(r.testId))
-  const el=    $('students-list')
+/* ── STUDENTS ── */
+async function loadStudents(t){
+  $('students-list').innerHTML='<div class="loading">Loading...</div>'
+  const res = await API.get('/api/results/teacher/'+t.id)
+  const el=$('students-list')
   if(!res.length){
     el.innerHTML=`<div class="empty-state"><span class="es-icon">👥</span><p>No students have submitted a test yet.</p></div>`
     return
   }
   const seen=new Set(); const uniq=[]
-  res.forEach(r=>{ const k=r.studentName+'|'+r.sinf+'|'+r.harf
+  res.forEach(r=>{ const k=r.student_name+'|'+r.sinf+'|'+r.harf
     if(!seen.has(k)){ seen.add(k); uniq.push(r) } })
-  el.innerHTML= uniq.map(r=>{
-    const cnt= res.filter(x=>x.studentName===r.studentName&&x.sinf===r.sinf&&x.harf===r.harf).length
-    const initials= r.studentName.split(' ').map(w=>w[0]||'').join('').slice(0,2).toUpperCase()
-    return `<div class="student-card" onclick="showStudentDetail('${encodeURIComponent(r.studentName)}','${r.sinf}','${r.harf}')">
+  el.innerHTML=uniq.map(r=>{
+    const cnt=res.filter(x=>x.student_name===r.student_name&&x.sinf===r.sinf&&x.harf===r.harf).length
+    const initials=r.student_name.split(' ').map(w=>w[0]||'').join('').slice(0,2).toUpperCase()
+    return `<div class="student-card" onclick="showStudentDetail('${encodeURIComponent(r.student_name)}','${r.sinf}','${r.harf}')">
       <div class="student-avatar">${initials}</div>
       <div class="student-card-body">
-        <h4>${r.studentName}</h4>
-        <p>Grade ${r.sinf}-${r.harf} &nbsp;·&nbsp; ${cnt} test(s) submitted</p>
+        <h4>${r.student_name}</h4>
+        <p>Grade ${r.sinf}-${r.harf} · ${cnt} test(s) submitted</p>
       </div>
       <div style="flex-shrink:0;display:flex;align-items:center;gap:8px">
         <span class="badge badge-navy">${cnt} test(s)</span>
@@ -488,90 +488,87 @@ function renderStudents(teacher){
   }).join('')
 }
 
-function showStudentDetail(encodedName, sinf, harf){
-  const name= decodeURIComponent(encodedName)
-  const teacher= LS.me(); if(!teacher) return
-  const myIds= LS.tests().filter(t=>t.teacherId===teacher.id).map(t=>t.id)
-  const allRes= LS.results().filter(r=>
-    myIds.includes(r.testId) && r.studentName===name && r.sinf===sinf && r.harf===harf
-  )
-  $('modal-title').textContent= name
-  $('modal-sub').textContent  = 'Grade '+sinf+'-'+harf+' · '+allRes.length+' test(s) submitted'
+/* ── STUDENT DETAIL MODAL ── */
+async function showStudentDetail(encodedName, sinf, harf){
+  const name=decodeURIComponent(encodedName)
+  $('modal-title').textContent=name
+  $('modal-sub').textContent='Grade '+sinf+'-'+harf
+  $('modal-body').innerHTML='<div class="loading">Loading...</div>'
+  $('modal-overlay').classList.add('open')
+
+  const allRes = await API.get('/api/results/teacher/'+ME.id)
+  const res = allRes.filter(r=>r.student_name===name&&r.sinf===sinf&&r.harf===harf)
+
   let html=''
-  allRes.forEach(res=>{
-    const pct= res.total>0 ? Math.round((res.score/res.total)*100) : 0
-    const btype= pct>=80?'green':pct>=50?'gold':'red'
+  res.forEach(r=>{
+    const pct=r.total>0?Math.round((r.score/r.total)*100):0
+    const bt=pct>=80?'green':pct>=50?'gold':'red'
     html+=`<div style="margin-bottom:20px">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px">
         <div>
-          <div style="font-weight:800;font-size:.95rem">📋 ${res.testNomi}</div>
-          <div style="font-size:.78rem;color:var(--muted);margin-top:2px">🕐 ${res.dateStr}</div>
+          <div style="font-weight:800;font-size:.95rem">📋 ${r.test_nomi}</div>
+          <div style="font-size:.78rem;color:var(--muted);margin-top:2px">🕐 ${r.date_str}</div>
         </div>
         <div style="text-align:right">
-          <div style="font-size:1.1rem;font-weight:900;color:var(--navy)">${res.score}/${res.total}</div>
-          <span class="badge badge-${btype}">${pct}% · ${res.grade||''}</span>
+          <div style="font-size:1.1rem;font-weight:900;color:var(--navy)">${r.score}/${r.total}</div>
+          <span class="badge badge-${bt}">${pct}% · ${r.grade||''}</span>
         </div>
       </div>`
-    if(res.answers && res.answers.length){
-      res.answers.forEach((ans,i)=>{
+    if(r.answers?.length){
+      r.answers.forEach((ans,i)=>{
         if(ans.type==='open'){
-          html+=`<div class="answer-item open">
-            <div class="ai-q">${i+1}. ${ans.question}</div>
-            <div class="ai-a">✏️ Answer: <b>${ans.given||'(not answered)'}</b></div>
-          </div>`
+          html+=`<div class="answer-item open"><div class="ai-q">${i+1}. ${ans.question}</div>
+            <div class="ai-a">✏️ Answer: <b>${ans.given||'(not answered)'}</b></div></div>`
         } else {
-          const isOk= ans.given===ans.correct
-          html+=`<div class="answer-item ${isOk?'ok':'fail'}">
-            <div class="ai-q">${i+1}. ${ans.question}</div>
-            <div class="ai-a">
-              ${isOk
-                ? `✅ Correct: <b>${ans.correct?.toUpperCase()}) ${ans.correctText||''}</b>`
-                : `❌ Given: <b>${ans.given?ans.given.toUpperCase()+') '+(ans.givenText||''):'(no answer)'}</b>
-                   &nbsp;·&nbsp; ✅ Correct: <b>${ans.correct?.toUpperCase()}) ${ans.correctText||''}</b>`
-              }
-            </div>
-          </div>`
+          const isOk=ans.given===ans.correct
+          html+=`<div class="answer-item ${isOk?'ok':'fail'}"><div class="ai-q">${i+1}. ${ans.question}</div>
+            <div class="ai-a">${isOk
+              ?`✅ Correct: <b>${ans.correct?.toUpperCase()}) ${ans.correctText||''}</b>`
+              :`❌ Given: <b>${ans.given?ans.given.toUpperCase()+') '+(ans.givenText||''):'(no answer)'}</b> · ✅ Correct: <b>${ans.correct?.toUpperCase()}) ${ans.correctText||''}</b>`
+            }</div></div>`
         }
       })
-    } else {
-      html+=`<div class="alert alert-info" style="font-size:.82rem">Detailed answer data not available.</div>`
     }
     html+='</div><hr class="divider"/>'
   })
-  $('modal-body').innerHTML= html || '<div class="empty-state"><p>No results.</p></div>'
-  $('modal-overlay').classList.add('open')
+  $('modal-body').innerHTML=html||'<div class="empty-state"><p>No results.</p></div>'
 }
 
 function closeModal(e){ if(e.target===$('modal-overlay')) closeModalDirect() }
 function closeModalDirect(){ $('modal-overlay').classList.remove('open') }
 
-function fillFilterTest(teacher){
-  const tests= LS.tests().filter(t=>t.teacherId===teacher.id)
-  const sel= $('filter-test')
+/* ── RESULTS ── */
+async function loadResults(t){
+  $('results-list').innerHTML='<div class="loading">Loading...</div>'
+  const [tests, res] = await Promise.all([
+    API.get('/api/tests/teacher/'+t.id),
+    API.get('/api/results/teacher/'+t.id)
+  ])
+  // fill filter
+  const sel=$('filter-test')
   sel.innerHTML='<option value="">— All Tests —</option>'
   tests.forEach(t=>{ const o=document.createElement('option'); o.value=t.id; o.textContent=t.nomi; sel.appendChild(o) })
+  window._allResults=res
+  renderResults()
 }
 
 function renderResults(){
-  const teacher= LS.me(); if(!teacher) return
-  const fid= $('filter-test')?.value||''
-  const myIds= LS.tests().filter(t=>t.teacherId===teacher.id).map(t=>t.id)
-  let res= LS.results().filter(r=>myIds.includes(r.testId))
-  if(fid) res= res.filter(r=>r.testId===fid)
-  res= res.sort((a,b)=>b.time-a.time)
-  const el= $('results-list')
+  const fid=$('filter-test')?.value||''
+  let res=(window._allResults||[]).filter(r=>!fid||r.test_id===fid)
+  res=res.sort((a,b)=>b.time-a.time)
+  const el=$('results-list')
   if(!res.length){
     el.innerHTML=`<div class="empty-state"><span class="es-icon">📭</span><p>No results yet.</p></div>`
     return
   }
-  el.innerHTML= res.map(r=>{
-    const pct= r.total>0 ? Math.round((r.score/r.total)*100) : 0
-    const bt= pct>=80?'green':pct>=50?'gold':'red'
+  el.innerHTML=res.map(r=>{
+    const pct=r.total>0?Math.round((r.score/r.total)*100):0
+    const bt=pct>=80?'green':pct>=50?'gold':'red'
     return `<div class="result-row-item"
-      onclick="showStudentDetail('${encodeURIComponent(r.studentName)}','${r.sinf}','${r.harf}')">
+      onclick="showStudentDetail('${encodeURIComponent(r.student_name)}','${r.sinf}','${r.harf}')">
       <div>
-        <div class="ri-name">👦 ${r.studentName}</div>
-        <div class="ri-meta">Grade ${r.sinf}-${r.harf} &nbsp;·&nbsp; 📋 ${r.testNomi} &nbsp;·&nbsp; 🕐 ${r.dateStr}</div>
+        <div class="ri-name">👦 ${r.student_name}</div>
+        <div class="ri-meta">Grade ${r.sinf}-${r.harf} · 📋 ${r.test_nomi} · 🕐 ${r.date_str}</div>
       </div>
       <div class="ri-score">
         <div class="big">${r.score}/${r.total}</div>
@@ -581,9 +578,10 @@ function renderResults(){
   }).join('')
 }
 
+/* ── INIT ── */
 ;(function(){
-  const me= LS.me()
-  if(me) openDashboard(me)
+  ME=loadMe()
+  if(ME) openDashboard(ME)
   else   addQ()
 })()
 </script>

@@ -20,6 +20,7 @@
     .tli-body h4{font-size:.95rem;font-weight:700;color:var(--text)}
     .tli-body p{font-size:.78rem;color:var(--muted);margin-top:3px}
     .tli-right{flex-shrink:0;text-align:right}
+    .loading{text-align:center;padding:32px;color:var(--muted);font-size:.9rem}
   </style>
 </head>
 <body>
@@ -31,9 +32,7 @@
       <span>Student Portal</span>
     </div>
   </div>
-  <div class="topbar-right">
-    <a href="index.html">← Home</a>
-  </div>
+  <div class="topbar-right"><a href="index.html">← Home</a></div>
 </header>
 
 <!-- SCREEN 1 — INFO -->
@@ -65,9 +64,7 @@
             <option>D</option><option>E</option>
           </select></div>
       </div>
-      <button class="btn btn-primary btn-block" onclick="enterStudent()">
-        Continue →
-      </button>
+      <button class="btn btn-primary btn-block" onclick="enterStudent()">Continue →</button>
     </div>
   </div>
 </div>
@@ -84,7 +81,7 @@
     </div>
     <div class="card">
       <div class="section-title">📋 Available Tests</div>
-      <div id="test-list"></div>
+      <div id="test-list"><div class="loading">Loading...</div></div>
     </div>
   </div>
 </div>
@@ -98,8 +95,7 @@
     </div>
     <div class="progress-wrap">
       <div class="progress-info">
-        <span id="prog-label"></span>
-        <span id="prog-pct"></span>
+        <span id="prog-label"></span><span id="prog-pct"></span>
       </div>
       <div class="progress-bar-bg">
         <div class="progress-bar" id="prog-bar" style="width:0%"></div>
@@ -113,8 +109,7 @@
       <button class="btn btn-primary" id="btn-next" onclick="nextQ()">Next →</button>
     </div>
     <div style="margin-top:14px">
-      <button class="btn btn-success btn-block" id="btn-finish"
-        style="display:none" onclick="finishExam()">
+      <button class="btn btn-success btn-block" id="btn-finish" style="display:none" onclick="finishExam()">
         ✅ Submit Test
       </button>
     </div>
@@ -138,71 +133,64 @@
   </div>
 </div>
 
-<footer class="footer">
-  © 2024 <span>Al Beruniy International School</span>
-</footer>
+<footer class="footer">© 2024 <span>Al Beruniy International School</span></footer>
 
 <script>
-const LS = {
-  tests:   ()=> JSON.parse(localStorage.getItem('mp_tests')||'[]'),
-  results: ()=> JSON.parse(localStorage.getItem('mp_results')||'[]'),
-  saveRes: d=> localStorage.setItem('mp_results', JSON.stringify(d))
+const API = {
+  get:  async url => { const r=await fetch(url); return r.json() },
+  post: async (url,body) => { const r=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}); return r.json() }
 }
 
 let student=null, exam=null, answers={}, curQ=0
 
-const $ = id => document.getElementById(id)
-const show = id => $(id).style.display='block'
-const hide = id => $(id).style.display='none'
-const al = (id,msg,t='error') => $(id).innerHTML=`<div class="alert alert-${t}">${msg}</div>`
+const $=id=>document.getElementById(id)
+const show=id=>$(id).style.display='block'
+const hide=id=>$(id).style.display='none'
+const al=(id,msg,t='error')=>$(id).innerHTML=`<div class="alert alert-${t}">${msg}</div>`
 
-function enterStudent(){
+async function enterStudent(){
   const ism=$('s-ism').value.trim(), fam=$('s-fam').value.trim()
   const sinf=$('s-sinf').value, harf=$('s-harf').value
   if(!ism||!fam||!sinf||!harf) return al('info-alert','⚠️ Please fill in all fields')
-  student={ ism, fam, sinf, harf, fullName:ism+' '+fam }
+  student={ism,fam,sinf,harf,fullName:ism+' '+fam}
   $('st-name').textContent='🎓 '+student.fullName
   $('st-class').textContent='Grade '+sinf+'-'+harf
-  hide('sc-info'); show('sc-tests'); renderTestList()
+  hide('sc-info'); show('sc-tests')
+  await renderTestList()
 }
 
 function backToInfo(){ hide('sc-tests'); show('sc-info') }
 
-function renderTestList(){
-  const all=LS.tests()
-  const tests=all.filter(t=>
-    (t.sinf===student.sinf||t.sinf==='Barcha'||t.harf==='All') &&
-    (t.harf===student.harf||t.harf==='Barcha'||t.harf==='All')
-  )
-  const results=LS.results()
+async function renderTestList(){
+  $('test-list').innerHTML='<div class="loading">Loading tests...</div>'
+  const tests = await API.get(`/api/tests?sinf=${student.sinf}&harf=${student.harf}`)
   const el=$('test-list')
   if(!tests.length){
     el.innerHTML=`<div class="empty-state"><span class="es-icon">📭</span><p>No tests available for your class yet.</p></div>`
     return
   }
-  el.innerHTML=tests.map(t=>{
-    const done=results.find(r=>
-      r.testId===t.id &&
-      r.studentName.toLowerCase()===student.fullName.toLowerCase() &&
-      r.sinf===student.sinf && r.harf===student.harf
-    )
-    if(done){
+
+  // Check which ones are already done
+  const checks = await Promise.all(tests.map(t=>
+    API.get(`/api/results/check?testId=${t.id}&studentName=${encodeURIComponent(student.fullName)}&sinf=${student.sinf}&harf=${student.harf}`)
+  ))
+
+  el.innerHTML=tests.map((t,i)=>{
+    if(checks[i]?.exists){
       return `<div class="test-list-item done">
         <div class="tli-icon done-icon">✅</div>
         <div class="tli-body">
           <h4>${t.nomi}</h4>
-          <p>👨‍🏫 ${t.teacherName} &nbsp;·&nbsp; 📚 ${t.fan} &nbsp;·&nbsp; ❓ ${t.questions.length} questions</p>
+          <p>👨‍🏫 ${t.teacher_name} · 📚 ${t.fan} · ❓ ${t.questions.length} questions</p>
         </div>
-        <div class="tli-right">
-          <span class="badge badge-green">Submitted ✓</span>
-        </div>
+        <div class="tli-right"><span class="badge badge-green">Submitted ✓</span></div>
       </div>`
     }
     return `<div class="test-list-item" onclick="startTest('${t.id}')">
       <div class="tli-icon">📋</div>
       <div class="tli-body">
         <h4>${t.nomi}</h4>
-        <p>👨‍🏫 ${t.teacherName} &nbsp;·&nbsp; 📚 ${t.fan} &nbsp;·&nbsp; ❓ ${t.questions.length} questions</p>
+        <p>👨‍🏫 ${t.teacher_name} · 📚 ${t.fan} · ❓ ${t.questions.length} questions</p>
       </div>
       <div class="tli-right">
         <span class="badge badge-blue">Grade ${t.sinf}-${t.harf}</span>
@@ -212,17 +200,16 @@ function renderTestList(){
   }).join('')
 }
 
-function startTest(id){
-  const test=LS.tests().find(t=>t.id===id); if(!test) return
-  const already=LS.results().find(r=>
-    r.testId===id &&
-    r.studentName.toLowerCase()===student.fullName.toLowerCase() &&
-    r.sinf===student.sinf && r.harf===student.harf
-  )
-  if(already){ alert('You have already submitted this test!'); return }
+async function startTest(id){
+  const tests = await API.get('/api/tests?sinf='+student.sinf+'&harf='+student.harf)
+  const test=tests.find(t=>t.id===id); if(!test) return
+
+  const chk=await API.get(`/api/results/check?testId=${id}&studentName=${encodeURIComponent(student.fullName)}&sinf=${student.sinf}&harf=${student.harf}`)
+  if(chk.exists){ alert('You have already submitted this test!'); return }
+
   exam=test; answers={}; curQ=0
   $('exam-title').textContent=test.nomi
-  $('exam-meta').textContent=`👨‍🏫 ${test.teacherName}  ·  📚 ${test.fan}  ·  ❓ ${test.questions.length} questions`
+  $('exam-meta').textContent=`👨‍🏫 ${test.teacher_name}  ·  📚 ${test.fan}  ·  ❓ ${test.questions.length} questions`
   hide('sc-tests'); show('sc-exam'); renderQ()
 }
 
@@ -240,26 +227,23 @@ function renderQ(){
     if(i===curQ) cls+=' current'
     return `<div class="${cls}" onclick="jumpQ(${i})">${i+1}</div>`
   }).join('')
+
   const isOpen=q.type==='open'
   let html=`<div class="question-card">
     <div class="q-num">Question ${curQ+1} / ${tot}</div>
     <div class="q-text">${q.text}</div>`
   if(isOpen){
-    const val=answers[curQ]||''
     html+=`<div class="open-answer">
-      <label style="font-size:.8rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.3px;margin-bottom:6px;display:block">
-        Write your answer below
-      </label>
+      <label style="font-size:.8rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.3px;margin-bottom:6px;display:block">Write your answer below</label>
       <textarea id="open-ans" placeholder="Type your answer here..."
-        onInput="answers[${curQ}]=this.value;updateNav()">${val}</textarea>
+        onInput="answers[${curQ}]=this.value;updateNav()">${answers[curQ]||''}</textarea>
     </div>`
   } else {
     const sel=answers[curQ]
-    const keys=['a','b','c','d'], labels={a:'A',b:'B',c:'C',d:'D'}
-    keys.forEach(k=>{
-      const checked=sel===k?'checked':'', selCls=sel===k?' selected':''
-      html+=`<label class="option-label${selCls}">
-        <input type="radio" name="opt" value="${k}" ${checked} onchange="selectAns('${k}')"/>
+    ;['a','b','c','d'].forEach(k=>{
+      const labels={a:'A',b:'B',c:'C',d:'D'}
+      html+=`<label class="option-label${sel===k?' selected':''}">
+        <input type="radio" name="opt" value="${k}" ${sel===k?'checked':''} onchange="selectAns('${k}')"/>
         <span class="opt-key">${labels[k]}</span>
         <span>${q.options[k]}</span>
       </label>`
@@ -272,8 +256,8 @@ function renderQ(){
 function updateNav(){
   const tot=exam.questions.length, allDone=Object.keys(answers).length===tot
   $('btn-prev').disabled=curQ===0; $('btn-prev').style.opacity=curQ===0?'.4':'1'
-  curQ===tot-1 ? hide('btn-next') : show('btn-next')
-  allDone ? show('btn-finish') : hide('btn-finish')
+  curQ===tot-1?hide('btn-next'):show('btn-next')
+  allDone?show('btn-finish'):hide('btn-finish')
 }
 
 function selectAns(val){ answers[curQ]=val; renderQ() }
@@ -281,34 +265,35 @@ function jumpQ(i){ curQ=i; renderQ() }
 function prevQ(){ if(curQ>0){ curQ--; renderQ() } }
 function nextQ(){ if(curQ<exam.questions.length-1){ curQ++; renderQ() } }
 
-function finishExam(){
+async function finishExam(){
   if(!confirm('Submit the test? You cannot undo this.')) return
+  $('btn-finish').disabled=true; $('btn-finish').textContent='⏳ Submitting...'
+
   let score=0, total=0
   const answerLog=exam.questions.map((q,i)=>{
     const given=answers[i]!==undefined?answers[i]:null
     if(q.type==='test'){
       total++
       const isOk=given===q.correct; if(isOk) score++
-      return { type:'test', question:q.text, given, givenText:given?q.options[given]:null,
-        correct:q.correct, correctText:q.options[q.correct], isOk }
+      return {type:'test',question:q.text,given,givenText:given?q.options[given]:null,
+        correct:q.correct,correctText:q.options[q.correct],isOk}
     }
-    return { type:'open', question:q.text, given:given||'' }
+    return {type:'open',question:q.text,given:given||''}
   })
   const pct=total>0?Math.round((score/total)*100):null
   const grade=pct===null?'Open-ended':pct>=86?"5 (Excellent)":pct>=71?"4 (Good)":pct>=56?"3 (Satisfactory)":"2 (Unsatisfactory)"
-  const result={
-    id:'r_'+Date.now(), testId:exam.id, testNomi:exam.nomi, teacherId:exam.teacherId,
+
+  const res=await API.post('/api/results',{
+    testId:exam.id, testNomi:exam.nomi, teacherId:exam.teacher_id,
     studentName:student.fullName, sinf:student.sinf, harf:student.harf,
-    score, total, pct, grade, answers:answerLog,
-    time:Date.now(), dateStr:new Date().toLocaleString('en')
-  }
-  const all=LS.results(); all.push(result); LS.saveRes(all)
+    score, total, pct, grade, answers:answerLog
+  })
+
+  if(res.error){ alert('Error: '+res.error); $('btn-finish').disabled=false; $('btn-finish').textContent='✅ Submit Test'; return }
+
   $('done-text').innerHTML=
     `<strong>${student.fullName}</strong> — Grade ${student.sinf}-${student.harf}<br/>
-     <span style="color:var(--muted);font-size:.88rem">
-       📋 ${exam.nomi}<br/>
-       Your result will be reviewed by your teacher.
-     </span>`
+     <span style="color:var(--muted);font-size:.88rem">📋 ${exam.nomi}<br/>Your result will be reviewed by your teacher.</span>`
   hide('sc-exam'); show('sc-done')
 }
 

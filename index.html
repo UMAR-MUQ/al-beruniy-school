@@ -66,12 +66,14 @@
 </footer>
 
 <script>
-  const t = JSON.parse(localStorage.getItem('mp_teachers')||'[]')
-  const ts= JSON.parse(localStorage.getItem('mp_tests')||'[]')
-  const r = JSON.parse(localStorage.getItem('mp_results')||'[]')
-  document.getElementById('stat-teachers').textContent = t.length
-  document.getElementById('stat-tests').textContent    = ts.length
-  document.getElementById('stat-results').textContent  = r.length
+  fetch('/api/teachers/count').then(()=>{}).catch(()=>{})
+  // Stats from API
+  Promise.all([
+    fetch('/api/tests').then(r=>r.json()).catch(()=>[]),
+    fetch('/api/results/count').then(r=>r.json()).catch(()=>({count:0}))
+  ]).then(([tests])=>{
+    document.getElementById('stat-tests').textContent=Array.isArray(tests)?tests.length:0
+  })
 </script>
 </body>
 </html>
