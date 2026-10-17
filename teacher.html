@@ -5,57 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Teacher — Al Beruniy International School</title>
   <link rel="stylesheet" href="style.css"/>
-  <style>
-    .test-card{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:12px;border:2px solid var(--border);background:#fff;margin-bottom:10px;transition:all .2s}
-    .test-card:hover{border-color:#c7d7ff;box-shadow:var(--shadow)}
-    .test-card-icon{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#eff6ff,#dbeafe);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
-    .test-card-body{flex:1;min-width:0}
-    .test-card-body h4{font-size:.93rem;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .test-card-body p{font-size:.78rem;color:var(--muted);margin-top:2px}
-    .test-card-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
-    .student-card{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:12px;border:2px solid var(--border);background:#fff;margin-bottom:10px;cursor:pointer;transition:all .2s}
-    .student-card:hover{border-color:var(--blue);box-shadow:var(--shadow);transform:translateX(3px)}
-    .student-avatar{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--navy),#1e3a8a);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:800;flex-shrink:0}
-    .student-card-body{flex:1;min-width:0}
-    .student-card-body h4{font-size:.93rem;font-weight:700;color:var(--text)}
-    .student-card-body p{font-size:.78rem;color:var(--muted);margin-top:2px}
-    .result-row-item{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-radius:10px;background:#f8fafc;border:1px solid var(--border);margin-bottom:8px;cursor:pointer;transition:all .2s;gap:10px;flex-wrap:wrap}
-    .result-row-item:hover{border-color:var(--blue);background:#eff6ff}
-    .result-row-item .ri-name{font-weight:700;font-size:.9rem}
-    .result-row-item .ri-meta{font-size:.78rem;color:var(--muted);margin-top:2px}
-    .result-row-item .ri-score{text-align:right;flex-shrink:0}
-    .result-row-item .ri-score .big{font-size:1.1rem;font-weight:900;color:var(--navy)}
-    .q-block-add{background:#f8fafc;border:2px solid var(--border);border-radius:14px;padding:20px;margin-bottom:14px}
-    .q-block-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
-    .q-label-tag{font-size:.72rem;font-weight:800;color:var(--blue);text-transform:uppercase;letter-spacing:.5px;background:#eff6ff;padding:4px 10px;border-radius:6px}
-    .qtype-btn{padding:5px 12px;border-radius:7px;border:2px solid var(--border);background:#fff;font-size:.75rem;font-weight:700;cursor:pointer;color:var(--muted);transition:all .2s;font-family:inherit}
-    .qtype-btn.on{background:var(--navy);color:#fff;border-color:var(--navy)}
-    .opts-wrap{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}
-    .opt-r{display:flex;align-items:center;gap:8px}
-    .opt-r .ok{min-width:28px;height:28px;border-radius:7px;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.73rem;font-weight:800;flex-shrink:0}
-    .opt-r input[type=text]{flex:1}
-    .cor-row{display:flex;gap:10px;align-items:center;margin-top:8px;flex-wrap:wrap}
-    .cor-row>label{font-size:.72rem;font-weight:700;color:var(--muted);text-transform:uppercase}
-    .cor-row select{width:auto;padding:7px 12px;font-size:.85rem}
-    .modal-overlay{position:fixed;inset:0;background:rgba(10,22,40,.55);backdrop-filter:blur(4px);z-index:999;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .25s}
-    .modal-overlay.open{opacity:1;pointer-events:all}
-    .modal{background:#fff;border-radius:22px;max-width:640px;width:100%;max-height:88vh;overflow-y:auto;box-shadow:var(--shadow-lg);transform:translateY(20px);transition:transform .3s}
-    .modal-overlay.open .modal{transform:translateY(0)}
-    .modal-head{display:flex;justify-content:space-between;align-items:flex-start;padding:22px 26px 16px;border-bottom:2px solid var(--border);position:sticky;top:0;background:#fff;border-radius:22px 22px 0 0;z-index:1}
-    .modal-head-info h3{font-size:1rem;font-weight:800}
-    .modal-head-info p{font-size:.8rem;color:var(--muted);margin-top:3px}
-    .modal-close{width:34px;height:34px;border-radius:9px;border:none;background:#f1f5f9;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-    .modal-close:hover{background:#fee2e2;color:var(--red)}
-    .modal-body{padding:20px 26px 26px}
-    .answer-item{border-radius:11px;padding:13px 15px;margin-bottom:10px;border-left:4px solid}
-    .answer-item.ok{background:#f0fdf4;border-color:var(--green)}
-    .answer-item.fail{background:#fff5f5;border-color:var(--red)}
-    .answer-item.open{background:#f0f9ff;border-color:var(--blue)}
-    .answer-item .ai-q{font-weight:700;font-size:.88rem;margin-bottom:7px;color:var(--text)}
-    .answer-item .ai-a{font-size:.82rem;color:var(--muted)}
-    .answer-item .ai-a b{color:var(--text)}
-    .loading{text-align:center;padding:32px;color:var(--muted);font-size:.9rem}
-  </style>
 </head>
 <body>
 
@@ -343,13 +292,13 @@ function renderMyTests(tests){
     return
   }
   el.innerHTML=tests.map(ts=>`
-    <div class="test-card">
-      <div class="test-card-icon">📋</div>
-      <div class="test-card-body">
+    <div class="list-item">
+      <div class="list-item-icon">📋</div>
+      <div class="list-item-body">
         <h4>${ts.nomi}</h4>
         <p>Grade ${ts.sinf}-${ts.harf} · ${ts.questions.length} questions</p>
       </div>
-      <div class="test-card-right">
+      <div class="list-item-right">
         <span class="badge badge-blue">${ts.sinf}-${ts.harf}</span>
         <button class="btn btn-danger btn-sm" onclick="delTest('${ts.id}')">🗑</button>
       </div>
@@ -474,15 +423,15 @@ async function loadStudents(t){
   el.innerHTML=uniq.map(r=>{
     const cnt=res.filter(x=>x.student_name===r.student_name&&x.sinf===r.sinf&&x.harf===r.harf).length
     const initials=r.student_name.split(' ').map(w=>w[0]||'').join('').slice(0,2).toUpperCase()
-    return `<div class="student-card" onclick="showStudentDetail('${encodeURIComponent(r.student_name)}','${r.sinf}','${r.harf}')">
-      <div class="student-avatar">${initials}</div>
-      <div class="student-card-body">
+    return `<div class="list-item clickable" onclick="showStudentDetail('${encodeURIComponent(r.student_name)}','${r.sinf}','${r.harf}')">
+      <div class="list-item-icon navy">${initials}</div>
+      <div class="list-item-body">
         <h4>${r.student_name}</h4>
         <p>Grade ${r.sinf}-${r.harf} · ${cnt} test(s) submitted</p>
       </div>
-      <div style="flex-shrink:0;display:flex;align-items:center;gap:8px">
+      <div class="list-item-right">
         <span class="badge badge-navy">${cnt} test(s)</span>
-        <span style="color:var(--blue);font-size:.85rem;font-weight:700">View →</span>
+        <span style="color:var(--blue);font-size:.82rem;font-weight:600">View →</span>
       </div>
     </div>`
   }).join('')
@@ -564,14 +513,14 @@ function renderResults(){
   el.innerHTML=res.map(r=>{
     const pct=r.total>0?Math.round((r.score/r.total)*100):0
     const bt=pct>=80?'green':pct>=50?'gold':'red'
-    return `<div class="result-row-item"
+    return `<div class="result-row"
       onclick="showStudentDetail('${encodeURIComponent(r.student_name)}','${r.sinf}','${r.harf}')">
-      <div>
-        <div class="ri-name">👦 ${r.student_name}</div>
-        <div class="ri-meta">Grade ${r.sinf}-${r.harf} · 📋 ${r.test_nomi} · 🕐 ${r.date_str}</div>
+      <div class="rr-left">
+        <div class="rr-name">👦 ${r.student_name}</div>
+        <div class="rr-meta">Grade ${r.sinf}-${r.harf} · 📋 ${r.test_nomi} · 🕐 ${r.date_str}</div>
       </div>
-      <div class="ri-score">
-        <div class="big">${r.score}/${r.total}</div>
+      <div class="rr-score">
+        <div class="score-big">${r.score}/${r.total}</div>
         <span class="badge badge-${bt}">${pct}% · ${r.grade||''}</span>
       </div>
     </div>`

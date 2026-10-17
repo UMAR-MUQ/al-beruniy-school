@@ -5,23 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Student — Al Beruniy International School</title>
   <link rel="stylesheet" href="style.css"/>
-  <style>
-    .entry-wrap{min-height:calc(100vh - 68px);display:flex;align-items:center;justify-content:center;padding:28px 16px;
-      background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(29,78,216,.1) 0%,transparent 70%),var(--bg)}
-    .test-list-item{display:flex;align-items:center;gap:14px;padding:16px 18px;border-radius:14px;
-      border:2px solid var(--border);background:#fff;margin-bottom:12px;transition:all .25s;cursor:pointer}
-    .test-list-item:hover{border-color:var(--blue);box-shadow:var(--shadow-md);transform:translateY(-2px)}
-    .test-list-item.done{border-color:#d1fae5;background:#f0fdf4;cursor:default}
-    .test-list-item.done:hover{transform:none;box-shadow:none}
-    .tli-icon{width:48px;height:48px;border-radius:13px;display:flex;align-items:center;justify-content:center;
-      font-size:1.3rem;flex-shrink:0;background:linear-gradient(135deg,#eff6ff,#dbeafe)}
-    .tli-icon.done-icon{background:linear-gradient(135deg,#d1fae5,#a7f3d0)}
-    .tli-body{flex:1;min-width:0}
-    .tli-body h4{font-size:.95rem;font-weight:700;color:var(--text)}
-    .tli-body p{font-size:.78rem;color:var(--muted);margin-top:3px}
-    .tli-right{flex-shrink:0;text-align:right}
-    .loading{text-align:center;padding:32px;color:var(--muted);font-size:.9rem}
-  </style>
 </head>
 <body>
 
@@ -177,22 +160,22 @@ async function renderTestList(){
 
   el.innerHTML=tests.map((t,i)=>{
     if(checks[i]?.exists){
-      return `<div class="test-list-item done">
-        <div class="tli-icon done-icon">✅</div>
-        <div class="tli-body">
+      return `<div class="list-item done">
+        <div class="list-item-icon green">✅</div>
+        <div class="list-item-body">
           <h4>${t.nomi}</h4>
           <p>👨‍🏫 ${t.teacher_name} · 📚 ${t.fan} · ❓ ${t.questions.length} questions</p>
         </div>
-        <div class="tli-right"><span class="badge badge-green">Submitted ✓</span></div>
+        <div class="list-item-right"><span class="badge badge-green">Submitted ✓</span></div>
       </div>`
     }
-    return `<div class="test-list-item" onclick="startTest('${t.id}')">
-      <div class="tli-icon">📋</div>
-      <div class="tli-body">
+    return `<div class="list-item clickable" onclick="startTest('${t.id}')">
+      <div class="list-item-icon">📋</div>
+      <div class="list-item-body">
         <h4>${t.nomi}</h4>
         <p>👨‍🏫 ${t.teacher_name} · 📚 ${t.fan} · ❓ ${t.questions.length} questions</p>
       </div>
-      <div class="tli-right">
+      <div class="list-item-right">
         <span class="badge badge-blue">Grade ${t.sinf}-${t.harf}</span>
         <div style="font-size:.8rem;color:var(--blue);font-weight:700;margin-top:4px">Start →</div>
       </div>
