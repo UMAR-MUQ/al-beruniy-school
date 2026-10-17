@@ -692,24 +692,120 @@ hr.divider { border: none; border-top: 1px solid var(--border); margin: 22px 0; 
 /* ================================================================
    RESPONSIVE
    ================================================================ */
-@media (max-width: 640px) {
-  .topbar { padding: 0 18px; height: 58px; }
-  .topbar-title span:last-child { display: none; }
-  .page-wrap { padding: 20px 14px 56px; }
-  .card { padding: 18px 16px; }
-  .auth-card { padding: 26px 18px 22px; }
+
+/* ── Tablet (≤768px) ── */
+@media (max-width: 768px) {
+  .page-wrap  { padding: 24px 16px 64px; }
+  .dash-nav   { gap: 4px; padding: 5px; }
+  .dash-nav-btn { min-width: 0; padding: 8px 12px; font-size: .8rem; }
+  .welcome-banner { gap: 14px; }
+  .welcome-banner::after { display: none; }
+  .wb-badge { display: none; }
   .form-row { grid-template-columns: 1fr; gap: 0; }
   .opts-grid, .opts-wrap { grid-template-columns: 1fr; }
-  .welcome-banner { padding: 16px 18px; }
-  .welcome-banner::after { display: none; }
-  .modal { border-radius: 14px; }
-  .modal-head, .modal-body { padding-left: 16px; padding-right: 16px; }
-  .dash-nav { gap: 4px; padding: 4px; }
-  .dash-nav-btn { min-width: 80px; padding: 8px 10px; font-size: .78rem; }
-  .role-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
-  .hero-inner h1 { font-size: 1.65rem; }
+  .card { padding: 20px 18px; }
 }
 
-@media (max-width: 400px) {
-  .role-grid { grid-template-columns: 1fr; max-width: 280px; }
+/* ── Mobile (≤600px) ── */
+@media (max-width: 600px) {
+
+  /* Topbar */
+  .topbar { padding: 0 16px; height: 56px; }
+  .topbar-title span:first-child { font-size: .85rem; }
+  .topbar-title span:last-child  { display: none; }
+  .topbar-right a { padding: 5px 10px; font-size: .75rem; }
+
+  /* Hero */
+  .hero-wrap { padding: 36px 16px 56px; min-height: auto; }
+  .hero-inner h1 { font-size: 1.7rem; letter-spacing: -.4px; }
+  .hero-inner > p { font-size: .9rem; margin-bottom: 32px; }
+  .hero-badge { font-size: .68rem; padding: 4px 12px; margin-bottom: 20px; }
+
+  /* Role cards — full width stack on mobile */
+  .role-grid {
+    grid-template-columns: 1fr;
+    max-width: 320px;
+    gap: 12px;
+  }
+  .role-card { padding: 22px 20px 20px; }
+  .role-card .rc-emoji { font-size: 2rem; margin-bottom: 10px; }
+  .role-card h2 { font-size: .97rem; }
+  .role-card > p { font-size: .78rem; margin-bottom: 14px; }
+  .role-card .rc-arrow { width: 28px; height: 28px; font-size: .82rem; }
+
+  /* Auth card */
+  .auth-wrap, .entry-wrap { padding: 24px 14px; }
+  .auth-card { padding: 24px 16px 22px; border-radius: var(--radius); }
+
+  /* Tabs */
+  .tabs { margin-bottom: 20px; }
+  .tab-btn { font-size: .8rem; padding: 8px 6px; }
+
+  /* Dash nav */
+  .dash-nav { flex-wrap: wrap; gap: 4px; padding: 4px; }
+  .dash-nav-btn { flex: 1 1 calc(50% - 8px); min-width: 0; padding: 8px 8px; font-size: .77rem; text-align: center; }
+
+  /* Card */
+  .card { padding: 16px 14px; border-radius: var(--radius); }
+
+  /* Welcome banner */
+  .welcome-banner { padding: 16px 16px; gap: 12px; }
+  .wb-avatar { width: 42px; height: 42px; font-size: 1.2rem; }
+  .wb-info h2 { font-size: .95rem; }
+  .wb-info p  { font-size: .75rem; }
+
+  /* Section title */
+  .section-title { font-size: .92rem; margin-bottom: 16px; }
+
+  /* Form */
+  .form-group { margin-bottom: 14px; }
+  input[type=text], input[type=password], input[type=number], select, textarea {
+    font-size: .88rem; padding: 9px 12px;
+  }
+  .form-row { grid-template-columns: 1fr; gap: 0; }
+
+  /* Buttons */
+  .btn { font-size: .85rem; padding: 9px 16px; }
+  .btn-block { padding: 11px 16px; }
+
+  /* List items */
+  .list-item { padding: 11px 13px; gap: 11px; }
+  .list-item-icon { width: 36px; height: 36px; font-size: 1rem; border-radius: 9px; }
+  .list-item-body h4 { font-size: .88rem; }
+  .list-item-body p  { font-size: .74rem; }
+
+  .result-row { padding: 10px 13px; }
+  .result-row .rr-name { font-size: .87rem; }
+  .result-row .rr-meta { font-size: .73rem; }
+
+  /* Q builder */
+  .q-block, .q-block-add { padding: 14px; }
+  .opts-grid, .opts-wrap { grid-template-columns: 1fr; gap: 6px; }
+
+  /* Exam */
+  .exam-header { padding: 16px 18px; border-radius: var(--radius); }
+  .exam-header h2 { font-size: .93rem; }
+  .q-dots { gap: 4px; }
+  .q-dot { width: 26px; height: 26px; font-size: .68rem; border-radius: 6px; }
+  .question-card { padding: 16px; }
+  .q-text { font-size: .9rem; }
+  .option-label { padding: 9px 11px; font-size: .85rem; }
+
+  /* Modal */
+  .modal { border-radius: var(--radius); max-height: 92vh; }
+  .modal-head, .modal-body { padding-left: 14px; padding-right: 14px; }
+  .modal-head { padding-top: 16px; padding-bottom: 12px; }
+  .modal-body { padding-top: 14px; padding-bottom: 20px; }
+
+  /* Progress */
+  .progress-bar-bg { height: 5px; }
+  .progress-bar    { height: 5px; }
+
+  /* Submitted */
+  .submitted-wrap { padding: 32px 14px; }
+  .submitted-wrap .s-icon { width: 60px; height: 60px; font-size: 1.7rem; }
+  .submitted-wrap h2 { font-size: 1.05rem; }
+
+  /* Q nav */
+  .q-nav .btn { padding: 8px 14px; font-size: .82rem; }
 }
